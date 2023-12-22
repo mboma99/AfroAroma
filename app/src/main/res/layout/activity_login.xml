@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".LoginActivity"
     android:background="@drawable/background">
 
     <TextView
@@ -29,8 +30,8 @@
         android:layout_height="68dp"
         android:fontFamily="@font/outfit_light"
         android:letterSpacing="0.08"
+        android:text="SWEET AROMAS LIKE AFRICA"
         android:textAlignment="center"
-        android:text="GET A TASTE OF AFRICA"
         android:textColor="#FFFFFF"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,62 +40,74 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.271" />
 
-    <Button
-        android:id="@+id/btnSignUp"
-        android:layout_width="131dp"
-        android:layout_height="46dp"
-        android:background="@drawable/round_cream_button"
-        android:fontFamily="@font/outfit_light"
-        android:onClick="redirectToSignUp"
-        android:text="@string/sign_up"
-        android:textColor="@color/white"
-        android:textSize="22sp"
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="278dp"
+        android:layout_height="52dp"
+        android:background="@drawable/edit_text_login"
+        android:elevation="20dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:padding="10dp"
+        android:hint="@string/email"
+        android:textColor="#505050"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.221"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.674" />
+        app:layout_constraintVertical_bias="0.456" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="284dp"
+        android:layout_height="52dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:hint="@string/password"
+        android:background="@drawable/edit_text_login"
+        android:elevation="20dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.574" />
 
     <Button
-        android:id="@+id/btnSignupPage"
-        android:layout_width="131dp"
-        android:layout_height="46dp"
-        android:background="@drawable/round_dark_cream_button"
+        android:id="@+id/btnLoginPage"
+        android:layout_width="238dp"
+        android:layout_height="59dp"
         android:fontFamily="@font/outfit_light"
-        android:onClick="redirectToLoginPage"
         android:text="@string/login"
-        android:textColor="@color/white"
         android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.782"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.674" />
-
-
-
-    <Button
-        android:id="@+id/btnGoogleLogin"
-        android:layout_width="291dp"
-        android:layout_height="60dp"
-        android:background="@drawable/round_white_button"
-        android:fontFamily="@font/outfit_light"
-        android:onClick="goToLoginPage"
-        android:paddingRight="25dp"
-        android:paddingLeft="20dp"
-        android:text="sign in with google"
-        android:textAlignment="viewEnd"
-        android:textColor="@color/black"
-        android:textSize="18dp"
-        android:drawableLeft="@drawable/google"
+        android:textColor="@color/white"
+        android:background="@drawable/round_dark_cream_button"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.819" />
+
+    <TextView
+        android:id="@+id/txtNoAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:fontFamily="@font/outfit_regular"
+        android:letterSpacing="0.09"
+        android:text="@string/don_t_have_an_account"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.923" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

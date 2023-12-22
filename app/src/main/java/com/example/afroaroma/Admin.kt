@@ -6,5 +6,19 @@ class Admin {
 
     }
 
-    fun 
+    fun viewOrders(){
+
+    }
+
+    fun sendNotification(){
+
+    }
+
+    fun updateOrderStatus(){
+
+    }
+
+    fun viewFeedback() {
+
+    }
 }
