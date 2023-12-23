@@ -45,6 +45,7 @@
         android:layout_height="46dp"
         android:background="@drawable/round_cream_button"
         android:fontFamily="@font/outfit_light"
+        android:letterSpacing="0.1"
         android:onClick="redirectToSignUp"
         android:text="@string/sign_up"
         android:textColor="@color/white"
@@ -62,6 +63,7 @@
         android:layout_height="46dp"
         android:background="@drawable/round_dark_cream_button"
         android:fontFamily="@font/outfit_light"
+        android:letterSpacing="0.1"
         android:onClick="redirectToLoginPage"
         android:text="@string/login"
         android:textColor="@color/white"
@@ -74,21 +76,20 @@
         app:layout_constraintVertical_bias="0.674" />
 
 
-
     <Button
         android:id="@+id/btnGoogleLogin"
         android:layout_width="291dp"
         android:layout_height="60dp"
         android:background="@drawable/round_white_button"
+        android:drawableLeft="@drawable/google"
         android:fontFamily="@font/outfit_light"
-        android:onClick="goToLoginPage"
-        android:paddingRight="25dp"
+        android:letterSpacing="0.05"
         android:paddingLeft="20dp"
+        android:paddingRight="25dp"
         android:text="sign in with google"
         android:textAlignment="viewEnd"
         android:textColor="@color/black"
         android:textSize="18dp"
-        android:drawableLeft="@drawable/google"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

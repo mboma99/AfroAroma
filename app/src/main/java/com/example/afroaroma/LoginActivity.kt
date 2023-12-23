@@ -1,13 +1,17 @@
 package com.example.afroaroma
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.firestore
 
 class LoginActivity : AppCompatActivity() {
 
@@ -17,6 +21,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
     private lateinit var textViewNoAccount: TextView
+    private lateinit var errorMessageText:TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,13 +34,17 @@ class LoginActivity : AppCompatActivity() {
         emailEditText = findViewById(R.id.email)
         passwordEditText = findViewById(R.id.password)
         loginButton = findViewById(R.id.btnLoginPage)
+        errorMessageText = findViewById(R.id.textError)
 
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
-
+            var message = ""
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 signInWithEmailPassword(email, password)
+            } else {
+                message = "Enter Password"
+                errorMessageText.text = message
             }
         }
         textViewNoAccount= findViewById(R.id.txtNoAccount)
@@ -68,20 +77,55 @@ class LoginActivity : AppCompatActivity() {
                         "Authentication passed!!",
                         Toast.LENGTH_SHORT,
                     ).show()
-                    redirectToAdminHome()
+                    loginDirect()
                 } else {
+                    errorMessageText.text = "Incorrect password"
                     Toast.makeText(
                         baseContext,
-                        "Authentication failed. $password",
+                        "Authentication failed.",
                         Toast.LENGTH_SHORT,
                     ).show()
                 }
             }
     }
 
+    private fun loginDirect() {
+        val db = Firebase.firestore
+        val userId = (auth.currentUser)?.uid // Get the UID of the current user
+
+        val userRef = userId?.let { db.collection("Users").document(it) }
+        userRef?.get()?.addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                val isAdmin = documentSnapshot.getLong("isAdmin")
+
+                if (isAdmin != null && isAdmin == 1L) {
+                    // The user is an admin, perform the appropriate action
+                    // For example, redirect to the admin dashboard
+                    redirectToAdminHome()
+                } else {
+                    // The user is not an admin, perform the appropriate action
+                    // For example, redirect to the regular user dashboard
+                    redirectToCustomerHome()
+                }
+            } else {
+                // Document doesn't exist, handle accordingly
+                Log.d(TAG, "No such document")
+            }
+        }?.addOnFailureListener { e ->
+            // Handle exceptions or failures
+            Log.e(TAG, "Error getting document", e)
+        }
+    }
+
 
     private fun redirectToAdminHome() {
         val intent = Intent(this, AdminHomeActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun redirectToCustomerHome() {
+        val intent = Intent(this, CustomerHomeActivity::class.java)
         startActivity(intent)
         finish()
     }
