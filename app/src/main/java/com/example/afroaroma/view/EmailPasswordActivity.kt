@@ -1,4 +1,4 @@
-package com.example.afroaroma
+package com.example.afroaroma.view
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log

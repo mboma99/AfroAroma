@@ -1,4 +1,4 @@
-package com.example.afroaroma
+package com.example.afroaroma.view
 
 import android.content.ContentValues
 import android.content.Intent
@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
+import com.example.afroaroma.R
+import com.example.afroaroma.admin.controller.AuthController
+import com.example.afroaroma.admin.controller.FirestoreController
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -14,54 +16,46 @@ import com.google.firebase.firestore.firestore
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient : GoogleSignInAccount
+    private lateinit var authController: AuthController
+    private lateinit var firestoreController: FirestoreController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        auth = FirebaseAuth.getInstance()
+        authController = AuthController()
+        firestoreController = FirestoreController()
+
     }
 
     public override fun onStart() {
         super.onStart()
 
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            loginDirect()
+        val userId = authController.getFirebaseUser()?.uid
+        if (userId != null) {
+            navUserRoles(userId)
         }
     }
 
-    private fun loginDirect() {
-        val db = Firebase.firestore
-        val userId = (auth.currentUser)?.uid // Get the UID of the current user
-
-        val userRef = userId?.let { db.collection("Users").document(it) }
-        userRef?.get()?.addOnSuccessListener { documentSnapshot ->
-            if (documentSnapshot.exists()) {
-                val isAdmin = documentSnapshot.getLong("isAdmin")
-
-                if (isAdmin != null && isAdmin == 1L) {
-                    // The user is an admin, perform the appropriate action
-                    // For example, redirect to the admin dashboard
+    private fun navUserRoles(userId: String) {
+        firestoreController.checkUserRoles(userId,
+            onSuccess = { isAdmin ->
+                if (isAdmin) {
                     redirectToAdminHome()
                 } else {
-                    // The user is not an admin, perform the appropriate action
-                    // For example, redirect to the regular user dashboard
                     redirectToCustomerHome()
                 }
-            } else {
-                // Document doesn't exist, handle accordingly
+            },
+            onFailure = {
+                //helps log if document doesn't exist
                 Log.d(ContentValues.TAG, "No such document")
             }
-        }?.addOnFailureListener { e ->
-            // Handle exceptions or failures
-            Log.e(ContentValues.TAG, "Error getting document", e)
-        }
+        )
     }
 
+    //Navigation
     private fun redirectToAdminHome() {
         val intent = Intent(this, AdminHomeActivity::class.java)
         startActivity(intent)

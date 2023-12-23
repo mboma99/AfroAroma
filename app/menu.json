@@ -1,0 +1,89 @@
+[
+  {
+    "name": "Safari Sunrise Blend",
+    "price": 4.99,
+    "description": "Embark on a journey with the Safari Sunrise Blend, a harmonious mix of African coffee beans that awaken your senses like the first light on a safari adventure. Rich, bold, and full of character, this blend promises an authentic African coffee experience.",
+    "quantity": 7,
+    "image": ""
+  },
+  {
+    "name": "Ethiopian Highlands Espresso",
+    "price": 5.49,
+    "description": "Take a sip of the Ethiopian Highlands Espresso, a dark and intense coffee inspired by the rugged landscapes of Ethiopia. This espresso boasts a unique profile with hints of fruity and floral notes, offering a taste of the high-altitude regions where these beans thrive.",
+    "quantity": 8,
+    "image": ""
+  },
+  {
+    "name": "Savannah Spice Latte",
+    "price": 4.79,
+    "description": "Indulge in the warmth of the Savannah Spice Latte, a comforting blend that combines the smoothness of African beans with a touch of spice reminiscent of the vibrant culture found on the savannah. It's a delightful and aromatic journey in every cup.",
+    "quantity": 6,
+    "image": ""
+  },
+  {
+    "name": "Kilimanjaro Gold Roast",
+    "price": 5.29,
+    "description": "Elevate your coffee experience with the Kilimanjaro Gold Roast, a golden blend inspired by the majestic peaks of Mount Kilimanjaro. This medium-roast coffee features a balanced flavor profile, capturing the essence of the fertile soils surrounding Africa's highest summit.",
+    "quantity": 5,
+    "image": ""
+  },
+  {
+    "name": "African Sunset Mocha",
+    "price": 4.49,
+    "description": "Unwind with the African Sunset Mocha, a decadent and soothing blend that mirrors the breathtaking hues of an African sunset. This mocha combines the richness of chocolate with the boldness of African coffee, creating a delightful harmony perfect for any time of day.",
+    "quantity": 10,
+    "image": ""
+  },
+  {
+    "name": "Nile Oasis Brew",
+    "price": 4.99,
+    "description": "Dive into the refreshing Nile Oasis Brew, a medium-roast coffee inspired by the fertile lands along the Nile River. This blend offers a crisp and clean flavor profile with subtle undertones, delivering a taste of the lush landscapes.",
+    "quantity": 7,
+    "image": ""
+  },
+  {
+    "name": "Moroccan Spice Infusion",
+    "price": 5.49,
+    "description": "Experience the exotic allure of the Moroccan Spice Infusion, a unique blend that combines North African spices with premium coffee. This aromatic brew promises a sensory journey with every sip, reminiscent of the vibrant markets of Morocco.",
+    "quantity": 8,
+    "image": ""
+  },
+  {
+    "name": "Zanzibar Vanilla Delight",
+    "price": 4.79,
+    "description": "Transport yourself to the spice islands with the Zanzibar Vanilla Delight. This coffee, infused with the sweet essence of vanilla, captures the spirit of Zanzibar's rich history and trade, offering a smooth and indulgent experience.",
+    "quantity": 9,
+    "image": ""
+  },
+  {
+    "name": "Saharan Sandstorm Espresso",
+    "price": 5.29,
+    "description": "Brace yourself for the boldness of the Saharan Sandstorm Espresso, a dark and intense brew inspired by the vast desert landscapes. With a powerful kick and deep flavor, this espresso embodies the strength and resilience of the Sahara.",
+    "quantity": 6,
+    "image": ""
+  },
+  {
+    "name": "African Rainforest Blend",
+    "price": 4.49,
+    "description": "Immerse yourself in the lush flavors of the African Rainforest Blend. This medium-bodied coffee captures the essence of the vibrant rainforests, offering a well-balanced and fruity profile that reflects the biodiversity of Africa's tropical landscapes.",
+    "quantity": 5,
+    "image": ""
+  },
+  {
+    "name": "Malawi Mountain Majesty",
+    "price": 4.99,
+    "description": "Experience the regal taste of Malawi Mountain Majesty, a high-altitude blend that echoes the grandeur of Malawi's scenic landscapes. This coffee boasts a bright acidity, coupled with floral notes, creating a majestic cup that pays homage to the 'Warm Heart of Africa.'",
+    "quantity": 7,
+    "image": ""
+  },
+  {
+    "name": "Ivory Coast Cocoa Harmony",
+    "price": 5.49,
+    "description": "Indulge in the Ivory Coast Cocoa Harmony, a rich and velvety blend that combines the smoothness of Ivory Coast coffee with the decadence of cocoa. This delightful fusion captures the essence of the Ivory Coast's cocoa-producing regions, offering a harmonious and satisfying experience.",
+    "quantity": 8,
+    "image": ""
+  }
+]
+```
+
+In the "image" field for each coffee option, you can later insert the actual image URLs or paths in your Firestore database when you have that information.

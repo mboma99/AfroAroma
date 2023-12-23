@@ -1,4 +1,4 @@
-package com.example.afroaroma
+package com.example.afroaroma.view
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -9,16 +9,22 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import com.google.firebase.Firebase
+import com.example.afroaroma.R
+import com.example.afroaroma.admin.controller.AuthController
+import com.example.afroaroma.admin.controller.FirestoreController
+import com.example.afroaroma.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.firestore
 
 
 class SignupActivity : AppCompatActivity() {
 
+    private lateinit var authController: AuthController
+    private lateinit var firestoreController: FirestoreController
+
     private lateinit var textViewHaveAcc: TextView
-    private lateinit var auth: FirebaseAuth
+
+    private lateinit var auth: FirebaseAuth //deletable
+
     private lateinit var firstNameEditText: EditText
     private lateinit var lastNameEditText: EditText
     private lateinit var emailEditText: EditText
@@ -33,6 +39,8 @@ class SignupActivity : AppCompatActivity() {
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
+        authController = AuthController()
+        firestoreController = FirestoreController()
 
 
         firstNameEditText = findViewById(R.id.firstName)
@@ -87,53 +95,44 @@ class SignupActivity : AppCompatActivity() {
             redirectToLoginActivity()
         }
     }
-    private fun signUpWithEmailPassword(email: String, password: String, firstName: String,lastName: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    auth.currentUser
-                    val user: FirebaseUser? = auth.currentUser
-                    addUserToDB(firstName, lastName, email)
-                    Toast.makeText(
-                        baseContext,
-                        "Authentication passed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(
-                        baseContext,
-                        "Authentication failed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                }
-            }
+
+    private fun signUpWithEmailPassword(email: String, password: String, firstName: String, lastName: String) {
+        authController.signUpWithEmailPassword(email, password, firstName, lastName, ::onSignUpComplete)
     }
 
-    private fun addUserToDB(firstName: String, lastName: String, email: String) {
-        // Access a Cloud Firestore instance from your Activity
-        val db = Firebase.firestore
-        val userId = (auth.currentUser)?.uid // Get the UID of the current user
-
-        if (userId != null) {
-            val userRef = db.collection("Users").document(userId)
-            val user = hashMapOf<String, Any?>()
-            user.put("FirstName", firstName)
-            user.put("LastName", lastName)
-            user.put("EmailAddress", email)
-            user.put("isAdmin", 0)
-
-            userRef.set(user)
-                .addOnSuccessListener {
-                    loginDirect()
-                    Log.d(TAG, "DocumentSnapshot added with ID: $userId")
-                }
-                .addOnFailureListener { e ->
-                    Log.w(TAG, "Error adding document", e)
-                }
+    private fun onSignUpComplete(user: User?) {
+        if (user != null) {
+            // Sign-up successful, proceed with Firestore logic
+            firestoreController.addUserToDB(user, ::onUserAddedToDB)
         } else {
-            Log.e(TAG, "User ID is null.")
+            // Sign-up failed
+            errorMessageText.text = "Authentication failed."
+            Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun onUserAddedToDB() {
+        // Handle any additional logic after the user is added to the Firestore database
+        // For example, redirect to the home screen
+        checkUserRoles()
+    }
+
+    private fun checkUserRoles() {
+
+        val userId = authController.getFirebaseUser()?.uid
+        firestoreController.checkUserRoles(userId,
+            onSuccess = { isAdmin ->
+                if (isAdmin) {
+                    redirectToAdminHome()
+                } else {
+                    redirectToCustomerHome()
+                }
+            },
+            onFailure = {
+                // Handle failure, e.g., document doesn't exist
+                Log.d(TAG, "No such document")
+            }
+        )
     }
 
     private fun matchPassword(password: String, passwordConfirm: String): Boolean {
@@ -157,31 +156,4 @@ class SignupActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun loginDirect() {
-        val db = Firebase.firestore
-        val userId = (auth.currentUser)?.uid // Get the UID of the current user
-
-        val userRef = userId?.let { db.collection("Users").document(it) }
-        userRef?.get()?.addOnSuccessListener { documentSnapshot ->
-            if (documentSnapshot.exists()) {
-                val isAdmin = documentSnapshot.getLong("isAdmin")
-
-                if (isAdmin != null && isAdmin == 1L) {
-                    // The user is an admin, perform the appropriate action
-                    // For example, redirect to the admin dashboard
-                    redirectToAdminHome()
-                } else {
-                    // The user is not an admin, perform the appropriate action
-                    // For example, redirect to the regular user dashboard
-                    redirectToCustomerHome()
-                }
-            } else {
-                // Document doesn't exist, handle accordingly
-                Log.d(TAG, "No such document")
-            }
-        }?.addOnFailureListener { e ->
-            // Handle exceptions or failures
-            Log.e(TAG, "Error getting document", e)
-        }
-    }
 }

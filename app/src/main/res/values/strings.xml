@@ -11,4 +11,12 @@
     <string name="last_name">last name</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="logout">logout</string>
+    <string name="view_menu">view menu</string>
+    <string name="view_orders">view orders</string>
+    <string name="promotions">promotions</string>
+    <string name="feedback">feedback</string>
+    <string name="menu">Menu</string>
+    <string name="edit">edit</string>
+    <string name="add">add</string>
+    <string name="delete">delete</string>
 </resources>

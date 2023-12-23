@@ -1,4 +1,4 @@
-package com.example.afroaroma
+package com.example.afroaroma.view
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -9,14 +9,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.firestore
+import com.example.afroaroma.R
+import com.example.afroaroma.admin.controller.AuthController
+import com.example.afroaroma.admin.controller.FirestoreController
+import com.example.afroaroma.model.User
 
 class LoginActivity : AppCompatActivity() {
 
-
-    private lateinit var auth: FirebaseAuth
+    private lateinit var authController: AuthController
+    private lateinit var firestoreController: FirestoreController
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
@@ -28,8 +29,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // Initialize Firebase Auth
-        auth = FirebaseAuth.getInstance()
+        authController = AuthController()
+        firestoreController = FirestoreController()
+        // Initialize Firebase Auth should be able to remove
 
         emailEditText = findViewById(R.id.email)
         passwordEditText = findViewById(R.id.password)
@@ -47,6 +49,7 @@ class LoginActivity : AppCompatActivity() {
                 errorMessageText.text = message
             }
         }
+
         textViewNoAccount= findViewById(R.id.txtNoAccount)
         textViewNoAccount.setOnClickListener {
             redirectToSignupActivity()
@@ -55,11 +58,9 @@ class LoginActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            redirectToAdminHome()
+        val userId = authController.getFirebaseUser()?.uid
+        if (userId != null) {
+            navUserRoles(userId)
         }
     }
     private fun redirectToSignupActivity() {
@@ -68,56 +69,46 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
     private fun signInWithEmailPassword(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success
-                    Toast.makeText(
-                        baseContext,
-                        "Authentication passed!!",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                    loginDirect()
-                } else {
-                    errorMessageText.text = "Incorrect password"
-                    Toast.makeText(
-                        baseContext,
-                        "Authentication failed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                }
-            }
+        authController.signInWithEmailPassword(email, password, ::onSignInComplete)
     }
 
-    private fun loginDirect() {
-        val db = Firebase.firestore
-        val userId = (auth.currentUser)?.uid // Get the UID of the current user
-
-        val userRef = userId?.let { db.collection("Users").document(it) }
-        userRef?.get()?.addOnSuccessListener { documentSnapshot ->
-            if (documentSnapshot.exists()) {
-                val isAdmin = documentSnapshot.getLong("isAdmin")
-
-                if (isAdmin != null && isAdmin == 1L) {
-                    // The user is an admin, perform the appropriate action
-                    // For example, redirect to the admin dashboard
-                    redirectToAdminHome()
-                } else {
-                    // The user is not an admin, perform the appropriate action
-                    // For example, redirect to the regular user dashboard
-                    redirectToCustomerHome()
-                }
-            } else {
-                // Document doesn't exist, handle accordingly
-                Log.d(TAG, "No such document")
-            }
-        }?.addOnFailureListener { e ->
-            // Handle exceptions or failures
-            Log.e(TAG, "Error getting document", e)
+    private fun onSignInComplete(user: User?) {
+        if (user != null) {
+            // Authentication successful
+            firestoreController.checkUserRole(user, ::onUserRoleChecked)
+        } else {
+            // Authentication failed
+            errorMessageText.text = "Incorrect password"
+            Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
         }
     }
 
+    private fun onUserRoleChecked(isAdmin: Boolean) {
+        if (isAdmin) {
+            redirectToAdminHome()
+        } else {
+            redirectToCustomerHome()
+        }
+    }
 
+    private fun navUserRoles(userId: String) {
+        firestoreController.checkUserRoles(userId,
+            onSuccess = { isAdmin ->
+                if (isAdmin) {
+                    redirectToAdminHome()
+                } else {
+                    redirectToCustomerHome()
+                }
+            },
+            onFailure = {
+                //helps log if document doesn't exist
+                Log.d(TAG, "No such document")
+            }
+        )
+    }
+
+
+    //navigation
     private fun redirectToAdminHome() {
         val intent = Intent(this, AdminHomeActivity::class.java)
         startActivity(intent)
