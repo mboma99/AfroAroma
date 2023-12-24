@@ -1,4 +1,4 @@
-package com.example.afroaroma.admin.controller
+package com.example.afroaroma.controller
 import com.example.afroaroma.model.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth

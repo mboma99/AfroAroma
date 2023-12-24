@@ -2,6 +2,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.AfroAroma" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your dark theme here. -->
+        <item name="android:windowEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_left</item>
+
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
 </resources>

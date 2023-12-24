@@ -10,8 +10,8 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.example.afroaroma.R
-import com.example.afroaroma.admin.controller.AuthController
-import com.example.afroaroma.admin.controller.FirestoreController
+import com.example.afroaroma.controller.AuthController
+import com.example.afroaroma.controller.FirestoreController
 import com.example.afroaroma.model.User
 import com.google.firebase.auth.FirebaseAuth
 

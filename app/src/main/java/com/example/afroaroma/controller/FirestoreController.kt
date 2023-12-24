@@ -1,5 +1,5 @@
 // FirestoreController.kt
-package com.example.afroaroma.admin.controller
+package com.example.afroaroma.controller
 
 import android.content.ContentValues
 import android.content.ContentValues.TAG
