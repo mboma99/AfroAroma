@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MenuAdminActivity">
+    tools:context=".view.MenuAdminActivity"
+    android:background="@drawable/background_admin">
 
     <ImageView
         android:id="@+id/btnBack"
@@ -14,10 +15,10 @@
         android:src="@drawable/back_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintHorizontal_bias="0.033"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
+        app:layout_constraintVertical_bias="0.033" />
 
     <TextView
         android:id="@+id/pageHead"
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/outfit_regular"
         android:text="@string/menu"
+        android:textColor="@color/black"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,20 +36,26 @@
         app:layout_constraintVertical_bias="0.035" />
 
     <ListView
+        android:id="@+id/menuListView"
         android:layout_width="385dp"
-        android:layout_height="449dp"
+        android:layout_height="495dp"
+        android:background="@drawable/round_white_button"
+        android:paddingStart="5dp"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.406" />
 
     <Button
         android:id="@+id/btnEdit"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="149dp"
         android:background="@drawable/round_dark_cream_button"
         android:fontFamily="@font/outfit_light"
         android:letterSpacing="0.1"
@@ -55,16 +63,15 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHorizontal_bias="0.051"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/_dynamic"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/menuListView"
+        app:layout_constraintVertical_bias="0.543" />
 
     <Button
         android:id="@+id/btnAdd"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="149dp"
         android:background="@drawable/round_dark_cream_button"
         android:fontFamily="@font/outfit_light"
         android:letterSpacing="0.1"
@@ -72,10 +79,10 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/_dynamic"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/menuListView"
+        app:layout_constraintVertical_bias="0.543" />
 
     <Button
         android:id="@+id/btnDelete"

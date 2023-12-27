@@ -23,6 +23,7 @@ class AuthController {
             }
     }
 
+    //create a customer account
     fun signUpWithEmailPassword(
         email: String,
         password: String,
@@ -34,13 +35,14 @@ class AuthController {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
-                    val userModel = User(user!!.uid,null ,firstName, lastName, email)
+                    val userModel = User(user!!.uid,false ,firstName, lastName, email)
                     onComplete(userModel)
                 } else {
                     onComplete(null)
                 }
             }
     }
+
 
     fun getCurrentUser(): User? {
         val firebaseUser = auth.currentUser

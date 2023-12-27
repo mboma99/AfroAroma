@@ -4,6 +4,7 @@ package com.example.afroaroma.controller
 import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.example.afroaroma.model.Drink
 import com.example.afroaroma.model.User
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.DocumentReference
@@ -114,6 +115,95 @@ class FirestoreController {
                 Log.e(ContentValues.TAG, "Error getting document", e)
             }
     }
+
+
+    fun getMenu(onSuccess: (List<Drink>) -> Unit, onFailure: () -> Unit) {
+        val drinksRef = db.collection("Menu")
+
+        drinksRef.get()
+            .addOnSuccessListener { documents ->
+                val menu = mutableListOf<Drink>()
+
+                for (document in documents) {
+                    val drinkId = document.id
+                    val name = document.getString("name") ?: ""
+                    val drinkDescription = document.getString("description") ?: ""
+
+                    val price: Double = try {
+                        document.getDouble("price") ?: 0.00
+                    } catch (e: Exception) {
+                        0.0
+                    }
+
+                    val quantity: Long = try {
+                        document.getLong("quantity") ?: 0L
+                    } catch (e: Exception) {
+                        0L
+                    }
+
+                    val imageUrl = document.getString("imageUrl") ?: ""
+
+                    val drink = Drink(drinkId, name, drinkDescription, price, quantity, imageUrl)
+                    menu.add(drink)
+                }
+
+                onSuccess(menu)
+            }
+            .addOnFailureListener {
+                // Handle the case where getting the menu fails
+                onFailure()
+            }
+    }
+
+
+
+    fun updateDrink(drink: Drink, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+        val drinkRef = db.collection("Menu").document(drink.drinkId)
+
+        drinkRef.update(
+            "name", drink.name,
+            "description", drink.drinkDescription,
+            "price", drink.price,
+            "quantity", drink.quantity
+        )
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { e ->
+                onFailure(e.message ?: "Error updating drink")
+            }
+    }
+
+    fun addDrink(drink: Drink, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+        val drinksCollection = db.collection("Menu")
+        val data = hashMapOf(
+            "name" to drink.name,
+            "description" to drink.drinkDescription,
+            "price" to drink.price,
+            "quantity" to drink.quantity
+        )
+        drinksCollection.add(data)
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { e ->
+                onFailure(e.message ?: "Error adding drink")
+            }
+    }
+
+    fun deleteDrink(drink: Drink, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+        val drinkRef = db.collection("Menu").document(drink.drinkId)
+
+        drinkRef.delete()
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { e ->
+                onFailure(e.message ?: "Error deleting drink")
+            }
+    }
+
+
 
 
 }
