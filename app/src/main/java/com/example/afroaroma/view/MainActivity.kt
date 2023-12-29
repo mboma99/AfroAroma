@@ -6,14 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.viewpager.widget.ViewPager
 import com.example.afroaroma.R
 import com.example.afroaroma.controller.AuthController
 import com.example.afroaroma.controller.FirestoreController
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var googleSignInClient : GoogleSignInAccount
     private lateinit var authController: AuthController
     private lateinit var firestoreController: FirestoreController
 

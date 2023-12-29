@@ -31,6 +31,8 @@ class EditDrinkActivity : AppCompatActivity() {
     private lateinit var btnBack: ImageView
     private lateinit var btnImageUpload: ImageView
     private lateinit var progressBar: ProgressBar
+    private lateinit var errorTextView: TextView
+    private lateinit var btnSave: Button
     private var selectedImageUri: Uri? = null
 
     private val imageActivityResult =
@@ -54,6 +56,8 @@ class EditDrinkActivity : AppCompatActivity() {
         titleTextView = findViewById(R.id.editTitleTextView)
         btnImageUpload = findViewById(R.id.btnImageUpload)
         progressBar = findViewById(R.id.progressBar)
+        errorTextView = findViewById(R.id.errorTextView)
+        btnSave= findViewById(R.id.createButton)
 
         val selectedDrink = intent.getParcelableExtra<Drink>("selectedDrink")
         //load image
@@ -66,11 +70,20 @@ class EditDrinkActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Error: Selected drink not found", Toast.LENGTH_SHORT).show()
         }
-
-        val saveButton: Button = findViewById(R.id.createButton)
-        saveButton.setOnClickListener {
-            showEditConfirmationDialog(selectedDrink)
+        btnSave.setOnClickListener {
+            val selectedDrink = intent.getParcelableExtra<Drink>("selectedDrink")
+            val name = sanitizeInput(nameEditText.text.toString())
+            val drinkDescription = sanitizeInput(descriptionEditText.text.toString())
+            val priceString = priceEditText.text.toString()
+            val quantityString = quantityEditText.text.toString()
+            val errorMessages = validateFields(name, drinkDescription, priceString, quantityString)
+            if (errorMessages.isEmpty()) {
+                showEditConfirmationDialog(selectedDrink)
+            }else {
+                showError(errorMessages)
+            }
         }
+
 
         btnBack.setOnClickListener { redirectToAdminMenu() }
 
@@ -106,7 +119,6 @@ class EditDrinkActivity : AppCompatActivity() {
 
     }
     private fun showEditConfirmationDialog(selectedDrink: Drink?) {
-
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_confirm, null)
         val dialogBuilder = AlertDialog.Builder(this)
             .setView(dialogView)
@@ -173,6 +185,57 @@ class EditDrinkActivity : AppCompatActivity() {
             saveEditedDataWithoutImage(selectedDrink)
         }
     }
+    private fun isValidPrice(price: String): Boolean {
+        // Define a regex pattern for validating the price format
+        val regex = Regex("^\\d+(\\.\\d{1,2})?$")
+        return regex.matches(price)
+    }
+
+    private fun sanitizeInput(input: String): String {
+        // Remove special characters that may be used for SQL injection
+        return input.replace(Regex("[^A-Za-z0-9 ]"), "")
+    }
+
+    private fun showError(message: String) {
+        errorTextView.text = message
+        errorTextView.visibility = View.VISIBLE
+    }
+    private fun validateFields(name: String, description: String, priceString: String, quantityString: String): String {
+        val missingFields = mutableListOf<String>()
+
+        if (name.isBlank()) {
+            missingFields.add("Name")
+        }
+
+        if (description.isBlank()) {
+            missingFields.add("Description")
+        }
+
+        if (priceString.isBlank()) {
+            missingFields.add("Price")
+        } else if (!isValidPrice(priceString)) {
+            return "Invalid price format. Please use 0.00 format."
+        }
+
+        if (quantityString.isBlank()) {
+            missingFields.add("Quantity")
+        } else if (!isValidQuantity(quantityString)) {
+            return "Invalid quantity format. Please enter a valid number."
+        }
+
+        return if (missingFields.isEmpty()) {
+            ""
+        } else {
+            "Please enter missing field(s): ${missingFields.joinToString(", ")}"
+        }
+    }
+
+    private fun isValidQuantity(quantity: String): Boolean {
+        return quantity.matches("\\d+".toRegex())
+    }
+
+
+
 
     //Navigation
 

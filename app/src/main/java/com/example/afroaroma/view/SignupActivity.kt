@@ -4,6 +4,8 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -30,8 +32,9 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var passwordConfirmEditText: EditText
-    private lateinit var errorMessageText:TextView
+    private lateinit var errorMessageText: TextView
     private lateinit var signupButton: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
@@ -42,7 +45,6 @@ class SignupActivity : AppCompatActivity() {
         authController = AuthController()
         firestoreController = FirestoreController()
 
-
         firstNameEditText = findViewById(R.id.firstName)
         lastNameEditText = findViewById(R.id.lastName)
         emailEditText = findViewById(R.id.email)
@@ -51,46 +53,39 @@ class SignupActivity : AppCompatActivity() {
         signupButton = findViewById(R.id.btnSignUp)
         errorMessageText = findViewById(R.id.textError)
 
-
         signupButton.setOnClickListener {
-            val email = emailEditText.text.toString()
+            val email = emailEditText.text.toString().toLowerCase()
             val password = passwordEditText.text.toString()
             val passwordConfirm = passwordConfirmEditText.text.toString()
-            val firstName = firstNameEditText.text.toString()
-            val lastName = lastNameEditText.text.toString()
-            val specialChars = charArrayOf('@', '#', '$', '%', '&')
+            val firstName = firstNameEditText.text.toString().toLowerCase()
+            val lastName = lastNameEditText.text.toString().toLowerCase()
 
-            var message = ""
+            val validationMessage = validateSignUpFields(email, password, passwordConfirm, firstName, lastName)
 
-            if (email.isNotEmpty() && password.isNotEmpty() && passwordConfirm.isNotEmpty() && firstName.isNotEmpty() && lastName.isNotEmpty()) {
-                    if (matchPassword(password, passwordConfirm)) {
-                        if (password.length >= 6) {
-                            if (specialChars.any { char -> password.contains(char) }) {
-                                try {
-                                    signUpWithEmailPassword(email, password, firstName, lastName)
-                                    // Add any code to handle successful sign-up, if needed.
-                                } catch (e: Exception) {
-                                    // Handle exceptions thrown by signUpWithEmailPassword
-                                    message = "Sign-up failed. Please try again."
-                                }
-                            } else {
-                                message = "The password does not contain any special character."
-                            }
-                        } else {
-                            message = "Password is too short. It must be at least 6 characters."
-                        }
-                    } else {
-                        message = "Passwords don't match."
+            if (validationMessage.isBlank()) {
+                if (isValidPassword(password)) {
+                    try {
+                        signUpWithEmailPassword(email, password, firstName, lastName)
+                        // Add any code to handle successful sign-up, if needed.
+                    } catch (e: Exception) {
+                        // Handle exceptions thrown by signUpWithEmailPassword
+                        errorMessageText.text = "Sign-up failed. Please try again."
                     }
+                } else {
+                    errorMessageText.text = "Invalid password format"
+                }
             } else {
-                message = "Not all fields are filled."
+                errorMessageText.text = validationMessage
             }
-
-            errorMessageText.text = message
         }
 
-
         textViewHaveAcc = findViewById(R.id.txtHaveAccount)
+        val originalText: String = textViewHaveAcc.text.toString()
+        val spannableString = SpannableString(originalText)
+        spannableString.setSpan(UnderlineSpan(), 0, originalText.length, 0)
+        textViewHaveAcc.text = spannableString
+
+
         textViewHaveAcc.setOnClickListener {
             redirectToLoginActivity()
         }
@@ -118,7 +113,6 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun checkUserRoles() {
-
         val userId = authController.getFirebaseUser()?.uid
         firestoreController.checkUserRoles(userId,
             onSuccess = { isAdmin ->
@@ -135,15 +129,82 @@ class SignupActivity : AppCompatActivity() {
         )
     }
 
+    private fun isValidPassword(password: String): Boolean {
+        val digitRegex = Regex(".*\\d.*")
+        val uppercaseRegex = Regex(".*[A-Z].*")
+        val lowercaseRegex = Regex(".*[a-z].*")
+        val specialCharRegex = Regex(".*[!@#\$%^&*()_+\\-=\\[\\]{};':\",.<>?/\\\\|].*")
+
+        return password.length >= 6 &&
+                digitRegex.matches(password) &&
+                uppercaseRegex.matches(password) &&
+                lowercaseRegex.matches(password) &&
+                specialCharRegex.matches(password)
+    }
+
+    private fun validateSignUpFields(email: String, password: String, passwordConfirm: String, firstName: String, lastName: String): String {
+        val missingRequirements = mutableListOf<String>()
+
+        when {
+            firstName.isBlank() -> missingRequirements.add("First Name")
+            lastName.isBlank() -> missingRequirements.add("Last Name")
+            email.isBlank() -> missingRequirements.add("Email")
+            password.isBlank() -> missingRequirements.add("Password")
+            passwordConfirm.isBlank() -> missingRequirements.add("Confirm Password")
+            !matchPassword(password, passwordConfirm) -> missingRequirements.add("Passwords must match")
+
+            else -> {
+                val requirementsMessage = passwordRequirements(password)
+                if (requirementsMessage != null) {
+                    missingRequirements.add(requirementsMessage)
+                }
+            }
+        }
+
+        return if (missingRequirements.isEmpty()) {
+            ""
+        } else {
+            "Missing field(s): ${missingRequirements.joinToString(", ")}"
+        }
+    }
+
+
     private fun matchPassword(password: String, passwordConfirm: String): Boolean {
         return password == passwordConfirm
     }
+
+    private fun passwordRequirements(password: String): String? {
+        val uppercaseRegex = Regex("[A-Z]")
+        val lowercaseRegex = Regex("[a-z]")
+        val digitRegex = Regex("\\d")
+
+        val missingRequirements = mutableListOf<String>()
+
+        if (!uppercaseRegex.containsMatchIn(password)) {
+            missingRequirements.add("Uppercase letter")
+        }
+
+        if (!lowercaseRegex.containsMatchIn(password)) {
+            missingRequirements.add("Lowercase letter")
+        }
+
+        if (!digitRegex.containsMatchIn(password)) {
+            missingRequirements.add("Digit")
+        }
+
+        return if (missingRequirements.isEmpty()) {
+            null
+        } else {
+            "Password is missing: ${missingRequirements.joinToString(", ")}"
+        }
+}
 
     private fun redirectToLoginActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }
+
     private fun redirectToAdminHome() {
         val intent = Intent(this, AdminHomeActivity::class.java)
         startActivity(intent)
@@ -155,5 +216,4 @@ class SignupActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-
 }

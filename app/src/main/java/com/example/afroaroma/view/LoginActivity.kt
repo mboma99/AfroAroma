@@ -2,17 +2,20 @@ package com.example.afroaroma.view
 
 import android.content.ContentValues.TAG
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.afroaroma.R
 import com.example.afroaroma.controller.AuthController
 import com.example.afroaroma.controller.FirestoreController
 import com.example.afroaroma.model.User
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -51,6 +54,11 @@ class LoginActivity : AppCompatActivity() {
         }
 
         textViewNoAccount= findViewById(R.id.txtNoAccount)
+
+        val originalText: String = textViewNoAccount.text.toString()
+        val spannableString = SpannableString(originalText)
+        spannableString.setSpan(UnderlineSpan(), 0, originalText.length, 0)
+        textViewNoAccount.text = spannableString
         textViewNoAccount.setOnClickListener {
             redirectToSignupActivity()
         }
@@ -78,10 +86,26 @@ class LoginActivity : AppCompatActivity() {
             firestoreController.checkUserRole(user, ::onUserRoleChecked)
         } else {
             // Authentication failed
-            errorMessageText.text = "Incorrect password"
-            Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+            val exception = authController.getLastAuthException()
+            if (exception != null) {
+                when (exception.errorCode) {
+                    "ERROR_WRONG_PASSWORD" -> {
+                        errorMessageText.text = "Incorrect password"
+                    }
+                    "ERROR_USER_NOT_FOUND" -> {
+                        errorMessageText.text = "Email not recognized"
+                    }
+                    else -> {
+                        errorMessageText.text = "Incorrect password"
+                    }
+                }
+            } else {
+                errorMessageText.text = "Authentication failed. Please try again."
+            }
         }
     }
+
+
 
     private fun onUserRoleChecked(isAdmin: Boolean) {
         if (isAdmin) {

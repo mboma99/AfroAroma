@@ -43,7 +43,8 @@ class DrinkAdapter(private val context: Context, private val drinks: List<Drink>
         // Set the name of the drink in the TextView
         val drink = getItem(position) as Drink
         nameTextView.text = drink.name
-        priceTextView.text = "£${drink.price}"
+        priceTextView.text = "£${"%.2f".format(drink.price)}"
+
         //quantityTextView.text = "Stock: ${drink.quantity}"
 
         return view

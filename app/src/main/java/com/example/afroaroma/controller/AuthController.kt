@@ -3,12 +3,18 @@ import com.example.afroaroma.model.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
 import kotlin.reflect.KFunction1
 
 class AuthController {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private var lastAuthException: FirebaseAuthException? = null
+
+    fun getLastAuthException(): FirebaseAuthException? {
+        return lastAuthException
+    }
 
     fun signInWithEmailPassword(email: String, password: String, onComplete: KFunction1<User?, Unit>) {
         auth.signInWithEmailAndPassword(email, password)
@@ -18,6 +24,7 @@ class AuthController {
                     val user = firbaseUser?.let { User(it.uid) }
                     onComplete(user)
                 } else {
+                    lastAuthException = task.exception as? FirebaseAuthException
                     onComplete(null)
                 }
             }

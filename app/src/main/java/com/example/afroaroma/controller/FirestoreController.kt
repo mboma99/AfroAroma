@@ -270,33 +270,15 @@ class FirestoreController {
 
     fun deleteDrink(drink: Drink, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
         val drinkRef = db.collection("Menu").document(drink.drinkId)
-        val storageRef = drink.imageUrl?.let { storage.getReferenceFromUrl(it) }
-        // Get the image URL from Firestore before deleting the document
+        val storageRef = drink.imageUrl?.takeIf { it.isNotBlank() }?.let { storage.getReferenceFromUrl(it) }
+
         drinkRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 val imageUrl = documentSnapshot.getString("imageUrl")
-
+                Log.d("DeleteItem", "Retrieved imageUrl: $imageUrl")
                 // Delete the image from Firebase Storage
-                if (!imageUrl.isNullOrEmpty()) {
+                if (imageUrl.isNullOrBlank()) {
 
-                    if (storageRef != null) {
-                        storageRef.delete()
-                            .addOnSuccessListener {
-
-                                drinkRef.delete()
-                                    .addOnSuccessListener {
-                                        onSuccess()
-                                    }
-                                    .addOnFailureListener { e ->
-                                        onFailure(e.message ?: "Error deleting drink")
-                                    }
-                            }
-                            .addOnFailureListener { e ->
-                                onFailure(e.message ?: "Error deleting image")
-                            }
-                    }
-                } else {
-                    // No image URL found, just delete the drink data
                     drinkRef.delete()
                         .addOnSuccessListener {
                             onSuccess()
@@ -304,12 +286,60 @@ class FirestoreController {
                         .addOnFailureListener { e ->
                             onFailure(e.message ?: "Error deleting drink")
                         }
+                } else {
+
+                    Log.d("DeleteItem", "this has photo")
+                    storageRef?.delete()?.addOnSuccessListener {
+
+                        drinkRef.delete()
+                            .addOnSuccessListener {
+                                onSuccess()
+                            }
+                            .addOnFailureListener { e ->
+                                onFailure(e.message ?: "Error deleting drink")
+                            }
+                    }?.addOnFailureListener { e ->
+                        onFailure(e.message ?: "Error deleting image")
+                    }
+                    //
                 }
             }
             .addOnFailureListener { e ->
                 onFailure(e.message ?: "Error getting drink data")
             }
     }
+
+    fun deleteDrink2(drink: Drink, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
+        val drinkRef = db.collection("Menu").document(drink.drinkId)
+        val imageUrl = drink.imageUrl
+        val storageRef = imageUrl?.let { storage.getReferenceFromUrl(it) }
+
+        if (imageUrl.isNullOrBlank()) {
+            // No image URL found, just delete the drink data
+            drinkRef.delete()
+                .addOnSuccessListener {
+                    onSuccess()
+                }
+                .addOnFailureListener { e ->
+                    onFailure(e.message ?: "Error deleting drink")
+                }
+        } else {
+            // Delete the image from Firebase Storage
+            Log.d("DeleteItem", "this has photo")
+            storageRef?.delete()?.addOnSuccessListener {
+                drinkRef.delete()
+                    .addOnSuccessListener {
+                        onSuccess()
+                    }
+                    .addOnFailureListener { e ->
+                        onFailure(e.message ?: "Error deleting drink")
+                    }
+            }?.addOnFailureListener { e ->
+                onFailure(e.message ?: "Error deleting image")
+            }
+        }
+    }
+
 
     fun getDrinkById(drinkId: String, onSuccess: (Drink?) -> Unit, onFailure: () -> Unit) {
         val drinksRef = db.collection("Menu").document(drinkId)
