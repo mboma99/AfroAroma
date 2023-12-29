@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">AfroAroma</string>
+    <string name="afroaroma">AFROAROMA</string>
+    <string name="login">login</string>
+    <string name="password">password</string>
+    <string name="email">email</string>
+    <string name="sign_up">sign up</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="first_name">first name</string>
+    <string name="last_name">last name</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="logout">logout</string>
+    <string name="view_menu">view menu</string>
+    <string name="view_orders">view orders</string>
+    <string name="promotions">promotions</string>
+    <string name="feedback">feedback</string>
+    <string name="menu">Menu</string>
+    <string name="edit">edit</string>
+    <string name="add">add</string>
+    <string name="delete">delete</string>
+    <string name="customer_orders">Orders</string>
+    <string name="update_orders_here">update orders here:</string>
+    <string name="drink_name_format">Drink: %1$s</string>
+    <string name="drink_names_format">Drinks: %1$s</string>
+    <string name="order_date_format">Order Date: %1$s</string>
+    <string name="order_status_ready">Ready</string>
+    <string name="order_status_preparing">Preparing</string>
+    <string name="order_status_collected">Collected</string>
+    <string name="total_cost_format">Total Cost: £%.2f</string>
+    <string name="archived_orders">Archived Orders</string>
+
 </resources>

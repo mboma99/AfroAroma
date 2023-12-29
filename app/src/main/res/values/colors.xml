@@ -2,4 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name = "dark_cream">#AC9B88</color>
+    <color name="cream">#F4C287</color>
+    <color name="gray">#AEADAD</color>
+    <color name="colorPreparing">#FFA500</color>
+    <color name="colorReady">#00FF00</color>
+    <color name="colorCollected">#ADD8E6</color>
+    <color name="dark_gray">#3E3E3E</color>
+
 </resources>

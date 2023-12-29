@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "752267374301",
+    "project_id": "cafemobileapplcation",
+    "storage_bucket": "cafemobileapplcation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752267374301:android:0e652b0d8ebf0be8217534",
+        "android_client_info": {
+          "package_name": "com.example.afroaroma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "752267374301-o0nguqikpbthaeoj2fqiuus8an6gnq1j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.afroaroma",
+            "certificate_hash": "3c3e7b4cf43726d662fb067fcca63027f185758e"
+          }
+        },
+        {
+          "client_id": "752267374301-huogasstidb8srnp38qf8g0s5et1gpe0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLvduueC18N33k1fEaz3XC_ccGtT62HdM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "752267374301-huogasstidb8srnp38qf8g0s5et1gpe0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
