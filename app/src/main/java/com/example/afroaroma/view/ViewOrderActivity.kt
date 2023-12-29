@@ -22,8 +22,6 @@ class ViewOrderActivity : AppCompatActivity() {
     private lateinit var authController: AuthController
     private lateinit var firestoreController: FirestoreController
     private lateinit var activeOrdersListView: ListView
-    private lateinit var archiveOrdersListView: ListView
-    private lateinit var orderAdapter: OrderAdapter
     private lateinit var btnBack: ImageView
     private lateinit var btnUpdate: Button
     private lateinit var btnClose:Button
@@ -31,14 +29,13 @@ class ViewOrderActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("ViewOrderActivity", "onCreate started tetetetetetete")
         setContentView(R.layout.activity_view_order)
 
         btnBack = findViewById(R.id.btnBack)
         btnUpdate = findViewById(R.id.btnUpdate)
         btnClose = findViewById(R.id.btnComplete)
         activeOrdersListView = findViewById(R.id.activeOrdersListView)
-        archiveOrdersListView = findViewById(R.id.archiveOrdersListView)
+
 
 
         authController = AuthController()
@@ -55,23 +52,14 @@ class ViewOrderActivity : AppCompatActivity() {
                     orderList.addAll(fetchedOrders)
 
                     val readyOrdersList = orderList.filter { it.orderStatus == "Ready" || it.orderStatus == "Preparing" }
-                    val collectedOrdersList = orderList.filter { it.orderStatus == "Collected" }
 
                     val readyOrdersAdapter = OrderAdapter(this, readyOrdersList)
-                    val collectedOrdersAdapter = OrderAdapter(this, collectedOrdersList)
 
                     activeOrdersListView.adapter = readyOrdersAdapter
-                    archiveOrdersListView.adapter = collectedOrdersAdapter
 
                     activeOrdersListView.setOnItemClickListener { _, _, position, _ ->
                         selectedOrder = readyOrdersAdapter.getItem(position) as Order
                         Toast.makeText(this, "Clicked on order: ${selectedOrder!!.orderId}", Toast.LENGTH_SHORT).show()
-                    }
-
-                    archiveOrdersListView.setOnItemClickListener { _, _, position, _ ->
-                        // Handle item click for collected orders
-                        selectedOrder = collectedOrdersAdapter.getItem(position) as Order
-                        Toast.makeText(this, "Clicked on archived order: ${selectedOrder!!.orderId}", Toast.LENGTH_SHORT).show()
                     }
 
                     activeOrdersListView.choiceMode = ListView.CHOICE_MODE_SINGLE

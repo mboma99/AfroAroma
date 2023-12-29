@@ -54,7 +54,7 @@ class FirestoreController {
                     onComplete()
                 }
                 .addOnFailureListener { e ->
-                    // Handle failure
+                    Log.e(TAG, "Error getting document", e)
                 }
         }
     }

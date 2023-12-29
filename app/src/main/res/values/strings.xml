@@ -21,7 +21,6 @@
     <string name="delete">delete</string>
     <string name="customer_orders">Orders</string>
     <string name="update_orders_here">update orders here:</string>
-    <string name="archive_orders">--Archive--</string>
     <string name="drink_name_format">Drink: %1$s</string>
     <string name="drink_names_format">Drinks: %1$s</string>
     <string name="order_date_format">Order Date: %1$s</string>
@@ -29,5 +28,6 @@
     <string name="order_status_preparing">Preparing</string>
     <string name="order_status_collected">Collected</string>
     <string name="total_cost_format">Total Cost: £%.2f</string>
+    <string name="archived_orders">Archived Orders</string>
 
 </resources>

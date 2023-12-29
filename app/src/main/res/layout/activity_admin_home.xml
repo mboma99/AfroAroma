@@ -92,18 +92,18 @@
         style="?android:attr/borderlessButtonStyle"/>
 
     <Button
-        android:id="@+id/viewPromotions"
-        android:layout_width="319dp"
+        android:id="@+id/viewArchive"
+        android:layout_width="320dp"
         android:layout_height="68dp"
         android:background="@drawable/round_white_button"
-        android:drawableLeft="@drawable/promo_icon"
+        android:drawableLeft="@drawable/server_storage"
         android:drawablePadding="10dp"
         android:fontFamily="@font/outfit_regular"
         android:letterSpacing="0.2"
-        android:text="@string/promotions"
+        android:text="@string/archived_orders"
         android:textAlignment="viewStart"
         android:paddingLeft="10dp"
-        android:textSize="22dp"
+        android:textSize="21dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

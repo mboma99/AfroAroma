@@ -17,6 +17,9 @@
         android:theme="@style/Theme.AfroAroma"
         tools:targetApi="31">
         <activity
+            android:name=".view.ArchiveOrdersActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.ViewOrderActivity"
             android:exported="false" />
         <activity

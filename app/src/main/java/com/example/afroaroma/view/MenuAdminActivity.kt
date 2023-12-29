@@ -152,5 +152,4 @@ class MenuAdminActivity : AppCompatActivity() {
         finish()
     }
 
-
 }

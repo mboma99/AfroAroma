@@ -20,7 +20,7 @@ class AdminHomeActivity : AppCompatActivity() {
     private lateinit var textViewLogout: TextView
     private lateinit var btnMenu: Button
     private lateinit var btnOrders: Button
-    private lateinit var btnPromotions: Button
+    private lateinit var btnArchive: Button
     private lateinit var btnFeedback: Button
 
 
@@ -38,7 +38,7 @@ class AdminHomeActivity : AppCompatActivity() {
 
         btnMenu = findViewById(R.id.viewMenu)
         btnOrders = findViewById(R.id.viewOrders)
-        btnPromotions = findViewById(R.id.viewPromotions)
+        btnArchive = findViewById(R.id.viewArchive)
         btnFeedback = findViewById(R.id.viewFeedback)
 
 
@@ -60,11 +60,18 @@ class AdminHomeActivity : AppCompatActivity() {
 
         btnMenu.setOnClickListener { redirectToMenuAdmin() }
         btnOrders.setOnClickListener{redirectToOrders()}
+        btnArchive.setOnClickListener { redirectToArchiveOrders() }
 
     }
 
 
     //navigation
+
+    private fun redirectToArchiveOrders() {
+        val intent = Intent(this, ArchiveOrdersActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 
     private fun redirectToMenuAdmin() {
         val intent = Intent(this, MenuAdminActivity::class.java)
