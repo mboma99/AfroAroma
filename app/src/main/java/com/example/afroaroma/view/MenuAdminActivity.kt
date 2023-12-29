@@ -54,6 +54,8 @@ class MenuAdminActivity : AppCompatActivity() {
 
                     // Set the DrinkAdapter on the ListView
                     menuListView.adapter = drinkAdapter
+                    menuListView.choiceMode = ListView.CHOICE_MODE_SINGLE
+                    menuListView.selector = resources.getDrawable(R.drawable.item_drink_selector)
                 },
                 onFailure = {
                     // Handle the failure case
@@ -74,9 +76,8 @@ class MenuAdminActivity : AppCompatActivity() {
 
         // Handle item click events if needed
         menuListView.setOnItemClickListener { _, _, position, _ ->
-            menuListView.choiceMode = ListView.CHOICE_MODE_SINGLE
             selectedDrink = drinkAdapter.getItem(position) as Drink
-            Toast.makeText(this, "Selected: ${selectedDrink!!.name}", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "Selected: ${selectedDrink!!.name}", Toast.LENGTH_SHORT).show()
         }
 
 
@@ -124,9 +125,6 @@ class MenuAdminActivity : AppCompatActivity() {
             )
         }
     }
-
-
-
 
     //navigation
     private fun redirectToAdminHome() {

@@ -15,7 +15,8 @@ data class Drink(
         parcel.readString() ?: "",
         parcel.readString() ?:"",
         parcel.readDouble(),
-        parcel.readLong()
+        parcel.readLong(),
+        parcel.readString() ?:""
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -24,10 +25,15 @@ data class Drink(
         parcel.writeString(drinkDescription)
         price?.let { parcel.writeDouble(it) }
         quantity?.let { parcel.writeLong(it) }
+        parcel.writeString(imageUrl)
     }
 
     override fun describeContents(): Int {
         return 0
+    }
+
+    fun calculatePrice(): Double? {
+        return price
     }
 
     companion object CREATOR : Parcelable.Creator<Drink> {

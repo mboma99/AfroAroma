@@ -9,8 +9,6 @@ import android.widget.TextView
 import com.example.afroaroma.R
 import com.example.afroaroma.model.Drink
 
-// DrinkAdapter.kt
-// DrinkAdapter.kt
 class DrinkAdapter(private val context: Context, private val drinks: List<Drink>) : BaseAdapter() {
 
     override fun getCount(): Int {
@@ -40,13 +38,13 @@ class DrinkAdapter(private val context: Context, private val drinks: List<Drink>
         // Get the TextView from the item_drink.xml layout
         val nameTextView: TextView = view.findViewById(R.id.nameTextView)
         val priceTextView: TextView = view.findViewById(R.id.priceTextView)
-        val quantityTextView: TextView = view.findViewById(R.id.quantityTextView)
+        //val quantityTextView: TextView = view.findViewById(R.id.quantityTextView)
 
         // Set the name of the drink in the TextView
         val drink = getItem(position) as Drink
         nameTextView.text = drink.name
-        priceTextView.text = "Price: £${drink.price}"
-        quantityTextView.text = "Stock: ${drink.quantity}"
+        priceTextView.text = "£${drink.price}"
+        //quantityTextView.text = "Stock: ${drink.quantity}"
 
         return view
     }

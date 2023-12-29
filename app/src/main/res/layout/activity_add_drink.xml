@@ -4,170 +4,185 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.AddDrinkActivity">
-
-    <ImageView
-        android:id="@+id/btnBack"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:clickable="true"
-        android:src="@drawable/back_icon"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.033"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.033" />
-
-
-    <TextView
-        android:id="@+id/editTitleTextView"
+    tools:context=".view.AddDrinkActivity"
+    android:background="@drawable/background">
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:fontFamily="@font/outfit_regular"
-        android:text="Add new item"
-        android:textAlignment="center"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        tools:ignore="MissingConstraints">
 
-    <EditText
-        android:id="@+id/editNameEditText"
-        android:layout_width="286dp"
-        android:layout_height="47dp"
-        android:layout_below="@+id/editTitleTextView"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:fontFamily="@font/outfit_light"
-        android:hint="Name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/editTitleTextView"
-        app:layout_constraintVertical_bias="0.047" />
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:context=".EditDrinkActivity">
 
-    <EditText
-        android:id="@+id/editDescriptionEditText"
-        android:layout_width="385dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView4"
-        android:fontFamily="@font/outfit_light"
-        android:hint="Description"
-        android:inputType="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.384"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.013" />
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:clickable="true"
+                android:src="@drawable/back_icon"
+                android:layout_marginTop="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.033"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.033" />
 
+            <TextView
+                android:id="@+id/addTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="8dp"
+                android:letterSpacing="0.15"
+                android:fontFamily="@font/outfit_regular"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text="Add New Item"
+                android:textAlignment="center"
+                android:textSize="23sp" />
 
-    <EditText
-        android:id="@+id/editPriceEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editDescriptionEditText"
-        android:layout_marginTop="50dp"
-        android:layout_toEndOf="@+id/textView"
-        android:fontFamily="@font/outfit_regular"
-        android:hint="£"
-        android:inputType="numberDecimal"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/editDescriptionEditText" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/addTitleTextView"
+                android:layout_marginTop="19dp"
+                android:background="@drawable/round_white_button"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
-    <EditText
-        android:id="@+id/editQuantityEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editDescriptionEditText"
-        android:layout_marginTop="50dp"
-        android:layout_toEndOf="@+id/textView5"
-        android:fontFamily="@font/outfit_regular"
-        android:hint="Quantity"
-        android:inputType="number"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/editDescriptionEditText" />
+                <ImageView
+                    android:id="@+id/btnImageUpload"
+                    android:layout_width="280dp"
+                    android:layout_height="200dp"
+                    app:srcCompat="@drawable/photo_placeholder" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_below="@+id/editDescriptionEditText"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="56dp"
-        android:text="Price:"
-        android:textAlignment="center"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editDescriptionEditText" />
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editTitleTextView"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:text="Name:"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.042"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTitleTextView"
-        app:layout_constraintVertical_bias="0.056" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editNameEditText"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/outfit_regular"
-        android:text="Description:"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.043"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/editTitleTextView"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:text="Name:"
+                        android:textSize="20dp" />
 
-    <Button
-        android:id="@+id/createButton"
-        android:layout_width="170dp"
-        android:layout_height="45dp"
-        android:layout_below="@+id/editPriceEditText"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/round_cream_button"
-        android:text="Create"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editDescriptionEditText"
-        app:layout_constraintVertical_bias="0.3" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editDescriptionEditText"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="56dp"
-        android:layout_toEndOf="@+id/editPriceEditText"
-        android:fontFamily="@font/outfit_regular"
-        android:text="Stock:"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editDescriptionEditText" />
+                    <EditText
+                        android:id="@+id/editNameEditText"
+                        android:layout_width="330dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/editTitleTextView"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/outfit_light"
+                        android:hint="Name" />
 
 
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/outfit_regular"
+                    android:text="Description:"
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/editDescriptionEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/outfit_light"
+                    android:hint="Description"
+                    android:inputType="textMultiLine" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:textSize="20dp">
+
+                    <TextView
+                        android:id="@+id/textPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/outfit_regular"
+                        android:text="Price:"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/editPriceEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:fontFamily="@font/outfit_regular"
+                        android:hint="£"
+                        android:inputType="numberDecimal" />
+
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="60dp"
+                        android:fontFamily="@font/outfit_regular"
+                        android:text="Stock:"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/editQuantityEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toEndOf="@+id/textView5"
+                        android:fontFamily="@font/outfit_regular"
+                        android:hint="qty"
+                        android:inputType="number" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/createButton"
+                    android:layout_width="150dp"
+                    android:layout_height="61dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/round_cream_button"
+                    android:fontFamily="@font/outfit_regular"
+                    android:letterSpacing="0.2"
+                    android:text="Save" />
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </ScrollView>/
 </androidx.constraintlayout.widget.ConstraintLayout>

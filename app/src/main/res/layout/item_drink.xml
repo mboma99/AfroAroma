@@ -6,31 +6,42 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="8dp"
-        android:background="@drawable/item_drink_selector">
+        android:background="@drawable/item_drink_selector"
+        android:fontFamily="@font/outfit_light">
 
         <TextView
             android:id="@+id/nameTextView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/outfit_light"
+            android:layout_weight="1"
+            android:fontFamily="@font/outfit_regular"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textColor="@color/dark_gray"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+             />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"
+            android:layout_marginRight="10dp"/>
 
         <TextView
             android:id="@+id/priceTextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/outfit_light"
-            android:textSize="16sp" />
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="@font/outfit_regular"
+            android:textSize="16sp"
+            android:textColor="@color/dark_gray"
+            android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/quantityTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/outfit_light"
-            android:textSize="16sp" />
+
     </LinearLayout>
 
 

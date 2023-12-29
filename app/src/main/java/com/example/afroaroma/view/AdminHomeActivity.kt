@@ -3,6 +3,7 @@ package com.example.afroaroma.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import com.example.afroaroma.R
@@ -25,6 +26,7 @@ class AdminHomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("MenuActivity", "onCreate started")
         setContentView(R.layout.activity_admin_home)
 
 
@@ -57,6 +59,7 @@ class AdminHomeActivity : AppCompatActivity() {
         textViewLogout.setOnClickListener { signOut() }
 
         btnMenu.setOnClickListener { redirectToMenuAdmin() }
+        btnOrders.setOnClickListener{redirectToOrders()}
 
     }
 
@@ -65,6 +68,12 @@ class AdminHomeActivity : AppCompatActivity() {
 
     private fun redirectToMenuAdmin() {
         val intent = Intent(this, MenuAdminActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun redirectToOrders() {
+        val intent = Intent(this, ViewOrderActivity::class.java)
         startActivity(intent)
         finish()
     }
