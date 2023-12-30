@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".signUpFragment">
+
+    <ImageView
+        android:id="@+id/wallpaperImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingTop="40dp">
+            <TextView
+                android:id="@+id/txtWelcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/outfit_bold"
+                android:letterSpacing="0.2"
+                android:text="@string/afroaroma"
+                android:textColor="#000000"
+                android:textSize="40sp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/outfit_light"
+                android:letterSpacing="0.15"
+                android:text="JOIN THE TRIBE"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="22sp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20sp"/>
+
+            <EditText
+                android:id="@+id/firstName"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_text_login"
+                android:elevation="20dp"
+                android:ems="10"
+                android:hint="@string/first_name"
+                android:inputType="textPersonName"
+                android:padding="10dp"
+                android:textColor="#505050"
+                android:layout_marginBottom="20dp"/>
+
+            <EditText
+                android:id="@+id/lastName"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_text_login"
+                android:elevation="20dp"
+                android:ems="10"
+                android:hint="@string/last_name"
+                android:inputType="textPersonName"
+                android:padding="10dp"
+                android:textColor="#505050"
+                android:layout_marginBottom="40dp"/>
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_text_login"
+                android:elevation="20dp"
+                android:ems="10"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:padding="10dp"
+                android:textColor="#505050"
+                android:layout_marginBottom="20dp"/>
+
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="300dp"
+                android:layout_height="52dp"
+                android:background="@drawable/edit_text_login"
+                android:elevation="20dp"
+                android:ems="10"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:layout_marginBottom="20dp"/>
+
+            <EditText
+                android:id="@+id/passwordConfirm"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_text_login"
+                android:elevation="20dp"
+                android:ems="10"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/textError"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/outfit_regular"
+                android:letterSpacing="0.09"
+                android:textAlignment="center"
+                android:textColor="@color/dark_gray"
+                android:textSize="17dp"
+                android:layout_marginBottom="10dp"/>
+
+            <Button
+                android:id="@+id/btnSignUp"
+                android:layout_width="240dp"
+                android:layout_height="59dp"
+                android:background="@drawable/round_dark_cream_button"
+                android:fontFamily="@font/outfit_light"
+                android:letterSpacing="0.15"
+                android:text="@string/sign_up"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/txtHaveAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:fontFamily="@font/outfit_light"
+                android:letterSpacing="0.1"
+                android:text="@string/already_have_an_account"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

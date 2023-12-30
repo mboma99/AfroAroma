@@ -1,56 +1,55 @@
-package com.example.afroaroma.view
+package com.example.afroaroma
 
-import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.ListView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import com.example.afroaroma.R
+import androidx.navigation.Navigation
 import com.example.afroaroma.controller.AuthController
 import com.example.afroaroma.controller.DrinkAdapter
 import com.example.afroaroma.controller.FirestoreController
+import com.example.afroaroma.databinding.FragmentAdminMenuBinding
 import com.example.afroaroma.model.Drink
 
-class MenuAdminActivity : AppCompatActivity() {
 
+class AdminMenuFragment : Fragment() {
 
+    private lateinit var binding: FragmentAdminMenuBinding
     private lateinit var authController: AuthController
     private lateinit var firestoreController: FirestoreController
     private lateinit var menuListView: ListView
     private lateinit var drinkAdapter: DrinkAdapter
-    private lateinit var btnBack: ImageView
-    private lateinit var btnEdit: Button
-    private lateinit var btnAdd: Button
-    private lateinit var btnDelete:Button
     private var selectedDrink: Drink? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_menu_admin)
-
-        btnBack = findViewById(R.id.btnBack)
-        btnEdit = findViewById(R.id.btnEdit)
-        btnAdd = findViewById(R.id.btnAdd)
-        btnDelete = findViewById(R.id.btnDelete)
         authController = AuthController()
         firestoreController = FirestoreController()
-        menuListView = findViewById(R.id.menuListView)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentAdminMenuBinding.inflate(inflater, container, false)
+        val view = binding.root
 
 
+        // Initialize the ListView from the layout
+        menuListView = binding.menuListView
 
-
+        // Initialize your authController, firestoreController, or any other necessary components.
 
         val currentUser = authController.getCurrentUserId()
         if (currentUser != null) {
             firestoreController.getMenu(
                 onSuccess = { menu ->
                     // Create a DrinkAdapter to display the menu in the ListView
-                    drinkAdapter = DrinkAdapter(this, menu)
+                    drinkAdapter = DrinkAdapter(requireContext(), menu)
 
                     // Set the DrinkAdapter on the ListView
                     menuListView.adapter = drinkAdapter
@@ -64,34 +63,37 @@ class MenuAdminActivity : AppCompatActivity() {
             )
         }
 
-
-        btnEdit.setOnClickListener {
-            // Check if an item is selected
-            if (selectedDrink != null) {
-                redirectToEditMenu()
-            } else {
-                Toast.makeText(this, "Please select an item to edit", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        // Handle item click events if needed
         menuListView.setOnItemClickListener { _, _, position, _ ->
             selectedDrink = drinkAdapter.getItem(position) as Drink
-            //Toast.makeText(this, "Selected: ${selectedDrink!!.name}", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(requireContext(), "Selected: ${selectedDrink!!.name}", Toast.LENGTH_SHORT).show()
         }
 
+        binding.btnBack.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_adminMenuFragment_to_adminHomeFragment)
+        }
 
-        btnDelete.setOnClickListener { showDeleteConfirmationDialog(selectedDrink) }
-        btnAdd.setOnClickListener { redirectToAddDrink() }
-        btnBack.setOnClickListener { redirectToAdminHome() }
+        binding.btnEdit.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putParcelable("selectedDrink", selectedDrink)
+                }
+                Navigation.findNavController(view).navigate(R.id.action_adminMenuFragment_to_editIDrinkFragment, bundle)
+        }
 
+        binding.btnAdd.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_adminMenuFragment_to_addDrinkFragment)
+        }
 
+        binding.btnDelete.setOnClickListener {
+            showDeleteConfirmationDialog(selectedDrink)
+        }
+
+        return view
     }
 
     private fun showDeleteConfirmationDialog(selectedDrink: Drink?) {
 
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_confirm, null)
-        val dialogBuilder = AlertDialog.Builder(this)
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm, null)
+        val dialogBuilder = AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .setTitle("Confirm Deletion of ${selectedDrink?.name}")
 
@@ -110,46 +112,37 @@ class MenuAdminActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
+
     private fun deleteDrink(selectedDrink: Drink?) {
         if (selectedDrink != null) {
 
             firestoreController.deleteDrink(
                 selectedDrink,
                 onSuccess = {
-                    Toast.makeText(this, "Drink deleted successfully", Toast.LENGTH_SHORT).show()
-                    redirectToAdminMenu()
+                    //Toast.makeText(this, "Drink deleted successfully", Toast.LENGTH_SHORT).show()
+                    refreshContents()
                 },
                 onFailure = { errorMessage ->
-                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             )
         }
     }
 
-    //navigation
-    private fun redirectToAdminHome() {
-        val intent = Intent(this, AdminHomeActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun redirectToAdminMenu() {
-        val intent = Intent(this, MenuAdminActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun redirectToAddDrink() {
-        val intent = Intent(this, AddDrinkActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-    private fun redirectToEditMenu() {
-        val intent = Intent(this, EditDrinkActivity::class.java).also {
-            it.putExtra("selectedDrink",selectedDrink)
+    private fun refreshContents() {
+        val currentUser = authController.getCurrentUserId()
+        if (currentUser != null) {
+            firestoreController.getMenu(
+                onSuccess = { menu ->
+                    // Update the data in the DrinkAdapter and notify the ListView of the changes
+                    drinkAdapter.updateData(menu)
+                },
+                onFailure = {
+                    // Handle the failure case
+                    println("Failed to get the menu.")
+                }
+            )
         }
-        startActivity(intent)
-        finish()
     }
 
 }

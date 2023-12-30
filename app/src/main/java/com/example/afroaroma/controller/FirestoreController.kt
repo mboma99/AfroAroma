@@ -100,27 +100,36 @@ class FirestoreController {
 
     //needs a rework
 
-    fun getUser(userId: String, onSuccess: (User) -> Unit, onFailure: () -> Unit) {
+    fun getUser(userId: String, onSuccess: (User?) -> Unit, onFailure: () -> Unit) {
         val userRef = db.document("Users/$userId")
         userRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 if (documentSnapshot.exists()) {
-                    //get custom type
-                    val user = documentSnapshot.toObject(User::class.java)
+                    val firstName = documentSnapshot.getString("FirstName")
+                    val lastName = documentSnapshot.getString("LastName")
+                    val email = documentSnapshot.getString("EmailAddress")
+                    val isAdmin = documentSnapshot.getBoolean("isAdmin")
+
+                    val user = User(userId, isAdmin, firstName,lastName,email)
                     if (user != null) {
+                        Log.d(TAG, "User retrieved successfully: ${user.firstName}")
                         onSuccess(user)
                     } else {
+                        Log.e(TAG, "User is null after conversion")
                         onFailure()
                     }
                 } else {
-                    onFailure()
+                    Log.d(TAG, "Document does not exist for userId: $userId")
+                    onSuccess(null)
                 }
             }
             .addOnFailureListener { e ->
+                Log.e(TAG, "Error getting document for userId: $userId", e)
                 onFailure()
-                Log.e(TAG, "Error getting document", e)
             }
     }
+
+
 
 
     fun getMenu(onSuccess: (List<Drink>) -> Unit, onFailure: () -> Unit) {

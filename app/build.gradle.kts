@@ -2,8 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    //id("androidx.navigation.safeargs.kotlin")
 }
-
 android {
     namespace = "com.example.afroaroma"
     compileSdk = 34
@@ -37,6 +37,7 @@ android {
     buildFeatures{
         viewBinding = true
     }
+
 }
 
 dependencies {
@@ -51,6 +52,9 @@ dependencies {
     implementation("com.airbnb.android:lottie:6.2.0")
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.google.firebase:firebase-messaging:23.4.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
+    //implementation( "androidx.navigation:navigation-safe-args-gradle-plugin:2.7.6")
     testImplementation("junit:junit:4.13.2")
     implementation("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
