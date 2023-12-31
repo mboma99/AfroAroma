@@ -25,6 +25,9 @@ The app follows the Model-View-Controller (MVC) architecture to organize code an
 - **View:** Displays the UI and interacts with the user.
 - **Controller:** Handles user input, updates the model, and updates the view.
 
+  ![image](https://github.com/mboma99/AfroAroma/assets/42808235/309a5d02-c194-4a9d-86b6-119a199154f8)
+
+
 ## Tech Stack
 
 - **Kotlin:** The programming language used for Android app development.
