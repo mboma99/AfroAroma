@@ -89,7 +89,6 @@ class LoginFragment : Fragment() {
                 "ERROR_USER_NOT_FOUND" -> "Email not recognized"
                 else -> "Authentication failed. Please try again."
             }
-
             errorMessageText.text = errorMessage ?: "Authentication failed. Please try again."
         }
     }

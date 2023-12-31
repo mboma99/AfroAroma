@@ -49,6 +49,9 @@
         <action
             android:id="@+id/action_signUpFragment_to_customerAccountFragment"
             app:destination="@id/customerAccountFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
     </fragment>
     <fragment
         android:id="@+id/customerAccountFragment"

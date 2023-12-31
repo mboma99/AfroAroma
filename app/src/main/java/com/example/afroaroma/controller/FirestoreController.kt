@@ -112,10 +112,10 @@ class FirestoreController {
 
                     val user = User(userId, isAdmin, firstName,lastName,email)
                     if (user != null) {
-                        Log.d(TAG, "User retrieved successfully: ${user.firstName}")
+                        //Log.d(TAG, "User retrieved successfully: ${user.firstName}")
                         onSuccess(user)
                     } else {
-                        Log.e(TAG, "User is null after conversion")
+                        //Log.e(TAG, "User is null after conversion")
                         onFailure()
                     }
                 } else {
@@ -257,8 +257,6 @@ class FirestoreController {
                         "quantity" to drink.quantity,
                         "imageUrl" to downloadUri.toString() // Use the download URL
                     )
-
-                    // Add drink data to Firestore
                     drinksCollection.add(data)
                         .addOnSuccessListener {
                             onSuccess()
@@ -285,7 +283,6 @@ class FirestoreController {
             .addOnSuccessListener { documentSnapshot ->
                 val imageUrl = documentSnapshot.getString("imageUrl")
                 Log.d("DeleteItem", "Retrieved imageUrl: $imageUrl")
-                // Delete the image from Firebase Storage
                 if (imageUrl.isNullOrBlank()) {
 
                     drinkRef.delete()
@@ -394,11 +391,11 @@ class FirestoreController {
         db.collection("Orders")
             .get()
             .addOnSuccessListener { querySnapshot ->
-                Log.d("ViewOrderActivity", "getOrdersList: Successfully fetched orders")
+                //Log.d("ViewOrderActivity", "getOrdersList: Successfully fetched orders")
                 val ordersList = mutableListOf<Order>()
 
                 for (document in querySnapshot) {
-                    Log.d("ViewOrderActivity", "getOrdersList: Processing order document")
+                    //Log.d("ViewOrderActivity", "getOrdersList: Processing order document")
 
                     val orderId = document.id
                     val userId = document.getString("userId")
@@ -410,7 +407,7 @@ class FirestoreController {
                         if (userId != null) {
                             getItemsForUser(uid,
                                 onSuccess = { items ->
-                                    Log.d("ViewOrderItemsCount", "getOrdersList: Successfully fetched items ${items.size}")
+                                    //Log.d("ViewOrderItemsCount", "getOrdersList: Successfully fetched items ${items.size}")
 
                                     val drinksFetchCount = AtomicInteger(items.size)
 
@@ -420,7 +417,7 @@ class FirestoreController {
 
                                         getDrinksForItemId(itemId, quantity,
                                             onSuccess = { drinks ->
-                                                Log.d("ViewOrderActivityDrinks", "getOrdersList: Successfully fetched drinks for ${drinks}")
+                                                //Log.d("ViewOrderActivityDrinks", "getOrdersList: Successfully fetched drinks for ${drinks}")
 
                                                 drinksList.addAll(drinks)
 

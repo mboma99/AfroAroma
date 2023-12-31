@@ -14,8 +14,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.navigation.Navigation
 import com.example.afroaroma.controller.AuthController
 import com.example.afroaroma.controller.FirestoreController
+
 import com.example.afroaroma.controller.OrderAdapter
 import com.example.afroaroma.model.Order
+import com.google.android.gms.tasks.Task
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.RemoteMessage
+
 
 class LiveOrdersFragment : Fragment() {
     private lateinit var authController: AuthController
@@ -26,6 +31,7 @@ class LiveOrdersFragment : Fragment() {
     private lateinit var btnClose: Button
     private lateinit var orderAdapter: OrderAdapter
     private var selectedOrder: Order? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -147,17 +153,67 @@ class LiveOrdersFragment : Fragment() {
     }
 
     private fun updateOrderStatus(orderId: String, newStatus: String) {
+        Log.d("LiveOrdersFragment", "Updating order status: $newStatus for orderId: $orderId")
+
         firestoreController.updateOrderStatus(
             orderId,
             newStatus,
             onSuccess = {
-                //showToast("Order status updated successfully")
+                Log.d("LiveOrdersFragment", "Order status updated successfully")
+
+                // Retrieve the userID from the selectedOrder
+                selectedOrder?.let { order ->
+                    val userID = order.userId
+
+                    // Retrieve the FCM token
+                    FirebaseMessaging.getInstance().token
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                // Get the FCM token
+                                val fcmToken = task.result
+                                Log.d("LiveOrdersFragment", "FCM aquired its $fcmToken")
+                                // Send notification
+                                if (fcmToken != null) {
+                                    sendNotification(userID, fcmToken, "Order Status Update", "Your order is now $newStatus")
+                                    Log.d("LiveOrdersFragment", "Notification sent successfully")
+                                } else {
+                                    showToast("Failed to retrieve FCM token.")
+                                    Log.e("LiveOrdersFragment", "Failed to retrieve FCM token.")
+                                }
+                            } else {
+                                showToast("Failed to retrieve FCM token: ${task.exception}")
+                                Log.e("LiveOrdersFragment", "Failed to retrieve FCM token: ${task.exception}")
+                            }
+                        }
+                }
             },
             onFailure = { exception ->
                 showToast("Failed to update order status: ${exception.message}")
+                Log.e("LiveOrdersFragment", "Failed to update order status: ${exception.message}", exception)
             }
         )
     }
+
+
+
+
+
+    private fun sendNotification(userID: String, fcmToken: String, title: String, message: String) {
+        val data = mutableMapOf<String, String>()
+        data["title"] = title
+        data["message"] = message
+        data["userID"] = userID
+        data["notificationType"] = "orderStatusUpdate"
+
+        val remoteMessage = RemoteMessage.Builder(fcmToken)
+            .setData(data)
+            .build()
+
+        FirebaseMessaging.getInstance().send(remoteMessage)
+    }
+
+
+
 
     private fun navigateToAdminHome() {
         view?.let { Navigation.findNavController(it).navigate(R.id.action_liveOrdersFragment_to_adminHomeFragment) }
