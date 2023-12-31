@@ -1,64 +1,56 @@
-package com.example.afroaroma.view
+package com.example.afroaroma
 
 import android.content.ContentValues.TAG
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import com.example.afroaroma.R
+import androidx.navigation.Navigation
 import com.example.afroaroma.controller.AuthController
 import com.example.afroaroma.controller.FirestoreController
+import com.example.afroaroma.databinding.FragmentSignUpBinding
 import com.example.afroaroma.model.User
-import com.google.firebase.auth.FirebaseAuth
 
+class signUpFragment : Fragment() {
 
-class SignupActivity : AppCompatActivity() {
-
+    private lateinit var binding: FragmentSignUpBinding
     private lateinit var authController: AuthController
     private lateinit var firestoreController: FirestoreController
 
-    private lateinit var textViewHaveAcc: TextView
 
-    private lateinit var auth: FirebaseAuth //deletable
-
-    private lateinit var firstNameEditText: EditText
-    private lateinit var lastNameEditText: EditText
-    private lateinit var emailEditText: EditText
-    private lateinit var passwordEditText: EditText
-    private lateinit var passwordConfirmEditText: EditText
-    private lateinit var errorMessageText: TextView
-    private lateinit var signupButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_signup)
-
-        // Initialize Firebase Auth
-        auth = FirebaseAuth.getInstance()
-
         authController = AuthController()
         firestoreController = FirestoreController()
+    }
 
-        firstNameEditText = findViewById(R.id.firstName)
-        lastNameEditText = findViewById(R.id.lastName)
-        emailEditText = findViewById(R.id.email)
-        passwordEditText = findViewById(R.id.password)
-        passwordConfirmEditText = findViewById(R.id.passwordConfirm)
-        signupButton = findViewById(R.id.btnSignUp)
-        errorMessageText = findViewById(R.id.textError)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        signupButton.setOnClickListener {
-            val email = emailEditText.text.toString().toLowerCase()
-            val password = passwordEditText.text.toString()
-            val passwordConfirm = passwordConfirmEditText.text.toString()
-            val firstName = firstNameEditText.text.toString().toLowerCase()
-            val lastName = lastNameEditText.text.toString().toLowerCase()
+        binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        binding.txtHaveAccount.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_signUpFragment_to_loginFragment)
+        }
+
+        binding.txtWelcome.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_signUpFragment_to_mainFragment)
+        }
+
+        binding.btnSignUp.setOnClickListener {
+            // Handle sign-up logic here
+            val email = binding.email.text.toString().toLowerCase()
+            val password = binding.password.text.toString()
+            val passwordConfirm = binding.passwordConfirm.text.toString()
+            val firstName = binding.firstName.text.toString().toLowerCase()
+            val lastName = binding.lastName.text.toString().toLowerCase()
 
             val validationMessage = validateSignUpFields(email, password, passwordConfirm, firstName, lastName)
 
@@ -69,26 +61,18 @@ class SignupActivity : AppCompatActivity() {
                         // Add any code to handle successful sign-up, if needed.
                     } catch (e: Exception) {
                         // Handle exceptions thrown by signUpWithEmailPassword
-                        errorMessageText.text = "Sign-up failed. Please try again."
+                        // Show an error message
+                        binding.textError.text = "Sign-up failed. Please try again."
                     }
                 } else {
-                    errorMessageText.text = "Invalid password format"
+                    binding.textError.text = "Invalid password format"
                 }
             } else {
-                errorMessageText.text = validationMessage
+                binding.textError.text = validationMessage
             }
         }
 
-        textViewHaveAcc = findViewById(R.id.txtHaveAccount)
-        val originalText: String = textViewHaveAcc.text.toString()
-        val spannableString = SpannableString(originalText)
-        spannableString.setSpan(UnderlineSpan(), 0, originalText.length, 0)
-        textViewHaveAcc.text = spannableString
-
-
-        textViewHaveAcc.setOnClickListener {
-            redirectToLoginActivity()
-        }
+        return view
     }
 
     private fun signUpWithEmailPassword(email: String, password: String, firstName: String, lastName: String) {
@@ -96,19 +80,23 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun onSignUpComplete(user: User?) {
+        val errorMessageText = binding.textError
+
         if (user != null) {
-            // Sign-up successful, proceed with Firestore logic
             firestoreController.addUserToDB(user, ::onUserAddedToDB)
         } else {
-            // Sign-up failed
-            errorMessageText.text = "Authentication failed."
-            Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+            val exception = authController.getLastAuthException()
+            val errorMessage = when (exception?.errorCode) {
+                "ERROR_WRONG_PASSWORD" -> "Incorrect password"
+                "ERROR_USER_NOT_FOUND" -> "Email not recognized"
+                else -> "Authentication failed. Please try again."
+            }
+            errorMessageText.text = errorMessage?: "Authentication failed. Please try again."
+            //Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun onUserAddedToDB() {
-        // Handle any additional logic after the user is added to the Firestore database
-        // For example, redirect to the home screen
         checkUserRoles()
     }
 
@@ -117,9 +105,9 @@ class SignupActivity : AppCompatActivity() {
         firestoreController.checkUserRoles(userId,
             onSuccess = { isAdmin ->
                 if (isAdmin) {
-                    redirectToAdminHome()
+                    redirectToAdmin()
                 } else {
-                    redirectToCustomerHome()
+                    redirectToCustomer()
                 }
             },
             onFailure = {
@@ -197,23 +185,13 @@ class SignupActivity : AppCompatActivity() {
         } else {
             "Password is missing: ${missingRequirements.joinToString(", ")}"
         }
-}
-
-    private fun redirectToLoginActivity() {
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 
-    private fun redirectToAdminHome() {
-        val intent = Intent(this, AdminHomeActivity::class.java)
-        startActivity(intent)
-        finish()
+    fun redirectToCustomer() {
+        view?.let { Navigation.findNavController(it).navigate(R.id.action_signUpFragment_to_customerAccountFragment) }
     }
 
-    private fun redirectToCustomerHome() {
-        val intent = Intent(this, CustomerHomeActivity::class.java)
-        startActivity(intent)
-        finish()
+    fun redirectToAdmin() {
+        view?.let { Navigation.findNavController(it).navigate(R.id.action_signUpFragment_to_adminHomeFragment) }
     }
 }

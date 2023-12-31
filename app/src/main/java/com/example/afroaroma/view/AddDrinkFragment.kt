@@ -1,24 +1,24 @@
 package com.example.afroaroma.view
 
-import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.Navigation
 import com.example.afroaroma.R
 import com.example.afroaroma.controller.FirestoreController
 import com.example.afroaroma.model.Drink
 
-class AddDrinkActivity : AppCompatActivity() {
+class addDrinkFragment : Fragment() {
 
     private lateinit var firestoreController: FirestoreController
     private lateinit var nameEditText: EditText
@@ -40,22 +40,28 @@ class AddDrinkActivity : AppCompatActivity() {
                 selectedImageUri = it
             }
         }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_drink)
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_add_drink, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         firestoreController = FirestoreController()
-        // Initialize UI components
-        errorTextView = findViewById(R.id.errorTextView) // Replace R.id.errorTextView with the actual ID of your TextView
-        btnBack = findViewById(R.id.btnBack)
-        nameEditText = findViewById(R.id.editNameEditText)
-        descriptionEditText = findViewById(R.id.editDescriptionEditText)
-        priceEditText = findViewById(R.id.editPriceEditText)
-        quantityEditText = findViewById(R.id.editQuantityEditText)
-        titleTextView = findViewById(R.id.addTitleTextView)
-        btnCreate= findViewById(R.id.createButton)
-        btnImageUpload = findViewById(R.id.btnImageUpload)
-        progressBar = findViewById(R.id.progressBar)
+
+        errorTextView = view.findViewById(R.id.errorTextView)
+        btnBack = view.findViewById(R.id.btnBack)
+        nameEditText = view.findViewById(R.id.editNameEditText)
+        descriptionEditText = view.findViewById(R.id.editDescriptionEditText)
+        priceEditText = view.findViewById(R.id.editPriceEditText)
+        quantityEditText = view.findViewById(R.id.editQuantityEditText)
+        titleTextView = view.findViewById(R.id.addTitleTextView)
+        btnCreate = view.findViewById(R.id.createButton)
+        btnImageUpload = view.findViewById(R.id.btnImageUpload)
+        progressBar = view.findViewById(R.id.progressBar)
 
         btnCreate.setOnClickListener {
             val name = sanitizeInput(nameEditText.text.toString())
@@ -69,64 +75,68 @@ class AddDrinkActivity : AppCompatActivity() {
                 val price = priceString.toDouble()
                 val quantity = quantityString.toLong()
                 val newDrink = Drink("", name, drinkDescription, price, quantity)
-                showCreatConfirmDialog(newDrink)
+                showCreateConfirmDialog(newDrink)
             } else {
                 showError(errorMessages)
             }
         }
-        btnImageUpload.setOnClickListener{ chooseImage() }
 
-        btnBack.setOnClickListener { redirectToAdminMenu() }
-    }
+        btnImageUpload.setOnClickListener { chooseImage() }
 
-
-    private fun showCreatConfirmDialog(selectedDrink: Drink?) {
-
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_confirm, null)
-        val dialogBuilder = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .setTitle("Confirm you want to add ${selectedDrink?.name}")
-
-        val alertDialog = dialogBuilder.create()
-
-        val btnConfirmEdit: Button = dialogView.findViewById(R.id.btnConfirm)
-        val btnCancelEdit: Button = dialogView.findViewById(R.id.btnCancel)
-        btnConfirmEdit.setOnClickListener {
-            alertDialog.dismiss()
-            if (selectedDrink != null) {
-                createDrink(selectedDrink)
+        btnBack.setOnClickListener {
+            requireView().let {
+                if (it != null && it.isAttachedToWindow) {
+                    Navigation.findNavController(it).navigate(R.id.action_addDrinkFragment_to_adminMenuFragment)
+                }
             }
         }
-        btnCancelEdit.setOnClickListener {
-            alertDialog.dismiss()
-        }
+    }
 
-        alertDialog.show()
+    fun showCreateConfirmDialog(selectedDrink: Drink?) {
+        selectedDrink?.let {
+            val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm, null)
+            val dialogBuilder = AlertDialog.Builder(requireActivity())
+                .setView(dialogView)
+                .setTitle("Confirm you want to add ${it.name}")
+
+            val alertDialog = dialogBuilder.create()
+
+            val btnConfirmEdit: Button = dialogView.findViewById(R.id.btnConfirm)
+            val btnCancelEdit: Button = dialogView.findViewById(R.id.btnCancel)
+            btnConfirmEdit.setOnClickListener {
+                alertDialog.dismiss()
+                createDrink(selectedDrink)
+            }
+            btnCancelEdit.setOnClickListener {
+                alertDialog.dismiss()
+            }
+
+            alertDialog.show()
+        }
     }
 
     private fun chooseImage() {
-        // Use the image picker to select an image
         imageActivityResult.launch("image/*")
     }
 
     private fun createDrink(drink: Drink){
         if (selectedImageUri != null) {
             progressBar.visibility = View.VISIBLE
-           if (drink != null) {
-               firestoreController.addDrinkWithPhoto(
-                   drink,
-                   selectedImageUri!!,
-                   onSuccess = {
-                       progressBar.visibility = View.GONE
-                       Toast.makeText(this, "Drink with photo added successfully", Toast.LENGTH_SHORT).show()
-                       redirectToAdminMenu()
-                   },
-                   onFailure = { errorMessage ->
-                       progressBar.visibility = View.GONE
-                       Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
-                   }
-               )
-           }
+            if (drink != null) {
+                firestoreController.addDrinkWithPhoto(
+                    drink,
+                    selectedImageUri!!,
+                    onSuccess = {
+                        progressBar.visibility = View.GONE
+                        //Toast.makeText(this, "Drink with photo added successfully", Toast.LENGTH_SHORT).show()
+                        view?.let { Navigation.findNavController(it).navigate(R.id.action_addDrinkFragment_to_adminMenuFragment) }
+                    },
+                    onFailure = { errorMessage ->
+                        progressBar.visibility = View.GONE
+                        //Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
         } else {
             createDrinkWithOutImage(drink)
         }
@@ -136,11 +146,11 @@ class AddDrinkActivity : AppCompatActivity() {
             firestoreController.addDrink(
                 drink,
                 onSuccess = {
-                    Toast.makeText(this, "Drink added successfully", Toast.LENGTH_SHORT).show()
-                    redirectToAdminMenu()
+                    //Toast.makeText(this, "Drink added successfully", Toast.LENGTH_SHORT).show()
+                    view?.let { Navigation.findNavController(it).navigate(R.id.action_addDrinkFragment_to_adminMenuFragment) }
                 },
                 onFailure = { errorMessage ->
-                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             )
         }
@@ -193,14 +203,4 @@ class AddDrinkActivity : AppCompatActivity() {
         errorTextView.text = message
         errorTextView.visibility = View.VISIBLE
     }
-
-
-
-    private fun redirectToAdminMenu() {
-        val intent = Intent(this, MenuAdminActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-
 }

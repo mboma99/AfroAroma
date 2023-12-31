@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CustomerHomeFragment"
+    android:background="@drawable/background">
+    <ImageView
+        android:id="@+id/wallpaperImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/textViewLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:fontFamily="@font/outfit_regular"
+            android:letterSpacing="0.09"
+            android:text="logout"
+            android:textColor="@color/black"
+            android:textSize="19dp" />
+    </LinearLayout>
+
+
+
+
+</FrameLayout>

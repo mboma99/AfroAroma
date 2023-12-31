@@ -8,19 +8,14 @@
     tools:context=".view.SplashActivity"
     android:background="@drawable/background">
 
-  <com.airbnb.lottie.LottieAnimationView
-      android:id="@+id/animationView"
-      android:layout_width="344dp"
-      android:layout_height="336dp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.492"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.556"
-      app:lottie_autoPlay="true"
-      app:lottie_loop="true"
-      app:lottie_rawRes="@raw/coffee_loading" />
 
-
+  <androidx.fragment.app.FragmentContainerView
+      android:id="@+id/fragmentContainerView2"
+      android:name="androidx.navigation.fragment.NavHostFragment"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:defaultNavHost="true"
+      app:navGraph="@navigation/afro_nav"
+      tools:layout_editor_absoluteX="1dp"
+      tools:layout_editor_absoluteY="1dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

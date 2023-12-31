@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/afro_nav"
+    app:startDestination="@id/splashActivity">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.afroaroma.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.afroaroma.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_customerAccountFragment"
+            app:destination="@id/customerAccountFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.afroaroma.signUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_customerAccountFragment"
+            app:destination="@id/customerAccountFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/customerAccountFragment"
+        android:name="com.example.afroaroma.CustomerHomeFragment"
+        android:label="fragment_customer_account"
+        tools:layout="@layout/fragment_customer_home" >
+        <action
+            android:id="@+id/action_customerAccountFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminHomeFragment"
+        android:name="com.example.afroaroma.AdminHomeFragment"
+        android:label="fragment_admin_home"
+        tools:layout="@layout/fragment_admin_home" >
+        <action
+            android:id="@+id/action_adminHomeFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_adminHomeFragment_to_liveOrdersFragment"
+            app:destination="@id/liveOrdersFragment" />
+        <action
+            android:id="@+id/action_adminHomeFragment_to_archiveOrdersFragment"
+            app:destination="@id/archiveOrdersFragment" />
+        <action
+            android:id="@+id/action_adminHomeFragment_to_adminMenuFragment"
+            app:destination="@id/adminMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashActivity"
+        android:name="com.example.afroaroma.SplashFragment"
+        android:label="fragment_splash_activity"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashActivity_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_splashActivity_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
+        <action
+            android:id="@+id/action_splashActivity_to_customerAccountFragment"
+            app:destination="@id/customerAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editIDrinkFragment"
+        android:name="com.example.afroaroma.editDrinkFragment"
+        android:label="fragment_edit_drink"
+        tools:layout="@layout/fragment_edit_drink" >
+        <action
+            android:id="@+id/action_editIDrinkFragment_to_adminMenuFragment"
+            app:destination="@id/adminMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addDrinkFragment"
+        android:name="com.example.afroaroma.view.addDrinkFragment"
+        android:label="fragment_add_drink"
+        tools:layout="@layout/fragment_add_drink" >
+        <action
+            android:id="@+id/action_addDrinkFragment_to_adminMenuFragment"
+            app:destination="@id/adminMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/liveOrdersFragment"
+        android:name="com.example.afroaroma.LiveOrdersFragment"
+        android:label="fragment_live_orders"
+        tools:layout="@layout/fragment_live_orders" >
+        <action
+            android:id="@+id/action_liveOrdersFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/archiveOrdersFragment"
+        android:name="com.example.afroaroma.archiveOrdersFragment"
+        android:label="fragment_archive_orders"
+        tools:layout="@layout/fragment_archive_orders" >
+        <action
+            android:id="@+id/action_archiveOrdersFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
+        <action
+            android:id="@+id/action_archiveOrdersFragment_to_archivedOrderViewFragment"
+            app:destination="@id/archivedOrderViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminMenuFragment"
+        android:name="com.example.afroaroma.AdminMenuFragment"
+        android:label="fragment_admin_menu"
+        tools:layout="@layout/fragment_admin_menu" >
+        <action
+            android:id="@+id/action_adminMenuFragment_to_adminHomeFragment"
+            app:destination="@id/adminHomeFragment" />
+        <action
+            android:id="@+id/action_adminMenuFragment_to_addDrinkFragment"
+            app:destination="@id/addDrinkFragment" />
+        <action
+            android:id="@+id/action_adminMenuFragment_to_editIDrinkFragment"
+            app:destination="@id/editIDrinkFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/archivedOrderViewFragment"
+        android:name="com.example.afroaroma.ArchivedOrderViewFragment"
+        android:label="fragment_archived_order_view"
+        tools:layout="@layout/fragment_archived_order_view" >
+        <action
+            android:id="@+id/action_archivedOrderViewFragment_to_archiveOrdersFragment"
+            app:destination="@id/archiveOrdersFragment" />
+    </fragment>
+</navigation>

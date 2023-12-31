@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ArchivedOrderViewFragment">
+
+    <ImageView
+        android:id="@+id/wallpaperImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:clickable="true"
+                android:src="@drawable/back_icon"
+                android:layout_marginTop="7dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:gravity="center"
+                android:paddingLeft="20dp">
+
+                <TextView
+                    android:id="@+id/addTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.15"
+                    android:fontFamily="@font/outfit_regular"
+                    android:foregroundGravity="center"
+                    android:gravity="center"
+                    android:text="View Order"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/userNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User Name: "
+                android:textSize="18sp"
+                android:fontFamily="@font/outfit_regular"
+                android:textColor="@color/dark_gray" />
+
+            <TextView
+                android:id="@+id/userEmailTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User Email: "
+                android:textSize="18sp"
+                android:fontFamily="@font/outfit_regular"
+                android:textColor="@color/dark_gray"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/orderIdTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order ID: "
+                android:textSize="18sp"
+                android:fontFamily="@font/outfit_regular"
+                android:textColor="@color/dark_gray"
+                android:layout_marginTop="30dp"/>
+
+            <TextView
+                android:id="@+id/orderDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order Date: "
+                android:textSize="18sp"
+                android:fontFamily="@font/outfit_regular"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/dark_gray"/>
+
+            <ListView
+                android:id="@+id/archivedOrderListView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:divider="@android:color/darker_gray"
+                android:dividerHeight="1dp"
+                android:padding="10dp"
+                android:background="@drawable/round_white_button"
+                android:layout_marginTop="16dp"/>
+
+            <TextView
+                android:id="@+id/totalCostTextView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="Total cost: "
+                android:textSize="22dp"
+                android:fontFamily="@font/outfit_bold"
+                android:background="@drawable/round_white_button"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/dark_gray"/>
+
+
+        </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</FrameLayout>

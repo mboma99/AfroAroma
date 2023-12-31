@@ -1,28 +1,33 @@
-package com.example.afroaroma.view
+package com.example.afroaroma
 
-import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.Navigation
+import com.example.afroaroma.controller.AuthController
+import com.example.afroaroma.controller.FirestoreController
+import com.example.afroaroma.databinding.FragmentEditDrinkBinding
+import com.example.afroaroma.model.Drink
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import com.example.afroaroma.R
-import com.example.afroaroma.controller.FirestoreController
-import com.example.afroaroma.model.Drink
 import com.bumptech.glide.Glide
 
 
-// EditDrinkActivity.kt
-class EditDrinkActivity : AppCompatActivity() {
+class editDrinkFragment : Fragment() {
+
+    private lateinit var binding: FragmentEditDrinkBinding
+    private lateinit var authController: AuthController
     private lateinit var firestoreController: FirestoreController
+
     private lateinit var nameEditText: EditText
     private lateinit var descriptionEditText: EditText
     private lateinit var priceEditText: EditText
@@ -42,25 +47,31 @@ class EditDrinkActivity : AppCompatActivity() {
                 selectedImageUri = it
             }
         }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_drink)
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentEditDrinkBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        authController = AuthController()
         firestoreController = FirestoreController()
-        // Initialize UI components
-        btnBack = findViewById(R.id.btnBack)
-        nameEditText = findViewById(R.id.editNameEditText)
-        descriptionEditText = findViewById(R.id.editDescriptionEditText)
-        priceEditText = findViewById(R.id.editPriceEditText)
-        quantityEditText = findViewById(R.id.editQuantityEditText)
-        titleTextView = findViewById(R.id.editTitleTextView)
-        btnImageUpload = findViewById(R.id.btnImageUpload)
-        progressBar = findViewById(R.id.progressBar)
-        errorTextView = findViewById(R.id.errorTextView)
-        btnSave= findViewById(R.id.createButton)
 
-        val selectedDrink = intent.getParcelableExtra<Drink>("selectedDrink")
-        //load image
+        btnBack = binding.btnBack
+        nameEditText = binding.editNameEditText
+        descriptionEditText = binding.editDescriptionEditText
+        priceEditText = binding.editPriceEditText
+        quantityEditText = binding.editQuantityEditText
+        titleTextView = binding.editTitleTextView
+        btnImageUpload = binding.btnImageUpload
+        progressBar = binding.progressBar
+        errorTextView = binding.errorTextView
+        btnSave = binding.createButton
+
+        val selectedDrink = arguments?.getParcelable<Drink>("selectedDrink")
+
+        // load image
         if (selectedDrink?.imageUrl?.isNotEmpty() == true) {
             loadAndDisplayImage(selectedDrink?.imageUrl)
         }
@@ -68,42 +79,44 @@ class EditDrinkActivity : AppCompatActivity() {
         if (selectedDrink != null) {
             populateUI(selectedDrink)
         } else {
-            Toast.makeText(this, "Error: Selected drink not found", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Error: Selected drink not found", Toast.LENGTH_SHORT).show()
         }
+
         btnSave.setOnClickListener {
-            val selectedDrink = intent.getParcelableExtra<Drink>("selectedDrink")
             val name = sanitizeInput(nameEditText.text.toString())
             val drinkDescription = sanitizeInput(descriptionEditText.text.toString())
             val priceString = priceEditText.text.toString()
             val quantityString = quantityEditText.text.toString()
             val errorMessages = validateFields(name, drinkDescription, priceString, quantityString)
+
             if (errorMessages.isEmpty()) {
                 showEditConfirmationDialog(selectedDrink)
-            }else {
+            } else {
                 showError(errorMessages)
             }
         }
 
+        btnBack.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_editIDrinkFragment_to_adminMenuFragment)
+        }
 
-        btnBack.setOnClickListener { redirectToAdminMenu() }
+        btnImageUpload.setOnClickListener { chooseImage() }
 
-        btnImageUpload.setOnClickListener{ chooseImage() }
+        return view
     }
 
     private fun loadAndDisplayImage(imageUrl: String?) {
-        Glide.with(this)
+        Glide.with(requireContext())
             .load(imageUrl)
             .placeholder(R.drawable.photo_placeholder)
             .error(R.drawable.google)
             .into(btnImageUpload)
     }
 
-
     private fun chooseImage() {
         // Use the image picker to select an image
         imageActivityResult.launch("image/*")
     }
-
 
     private fun populateUI(selectedDrink: Drink?) {
         // Populate UI components with the details of the selected Drink
@@ -116,11 +129,11 @@ class EditDrinkActivity : AppCompatActivity() {
         } else {
             titleTextView.text = "null"
         }
-
     }
+
     private fun showEditConfirmationDialog(selectedDrink: Drink?) {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_confirm, null)
-        val dialogBuilder = AlertDialog.Builder(this)
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm, null)
+        val dialogBuilder = AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .setTitle("Confirm edit of ${selectedDrink?.name}")
 
@@ -151,12 +164,11 @@ class EditDrinkActivity : AppCompatActivity() {
                 selectedDrink,
                 onSuccess = {
                     progressBar.visibility = View.GONE
-                    Toast.makeText(this, "Drink updated successfully", Toast.LENGTH_SHORT).show()
-                    redirectToAdminMenu()
+                    view?.let { Navigation.findNavController(it).navigate(R.id.action_editIDrinkFragment_to_adminMenuFragment) }
+
                 },
                 onFailure = { errorMessage ->
                     progressBar.visibility = View.GONE
-                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             )
         }
@@ -171,13 +183,12 @@ class EditDrinkActivity : AppCompatActivity() {
                     selectedImageUri!!,
                     onSuccess = {
                         progressBar.visibility = View.GONE
-                        Toast.makeText(this, "Drink and image updated successfully", Toast.LENGTH_SHORT).show()
-                        redirectToAdminMenu()
+                        view?.let { Navigation.findNavController(it).navigate(R.id.action_editIDrinkFragment_to_adminMenuFragment) }
+
                     },
                     onFailure = { errorMessage ->
                         progressBar.visibility = View.GONE
-                        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
-                    }
+                        }
                 )
             }
         } else {
@@ -233,17 +244,5 @@ class EditDrinkActivity : AppCompatActivity() {
     private fun isValidQuantity(quantity: String): Boolean {
         return quantity.matches("\\d+".toRegex())
     }
-
-
-
-
-    //Navigation
-
-    private fun redirectToAdminMenu() {
-        val intent = Intent(this, MenuAdminActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
 
 }
