@@ -1,4 +1,4 @@
-package com.example.afroaroma.controller
+package com.example.afroaroma.model
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.example.afroaroma.R
-import com.example.afroaroma.model.Order
 import java.text.SimpleDateFormat
 import java.util.*
 

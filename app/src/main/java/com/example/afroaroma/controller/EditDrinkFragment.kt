@@ -1,4 +1,4 @@
-package com.example.afroaroma
+package com.example.afroaroma.controller
 
 import android.net.Uri
 import android.os.Bundle
@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.Navigation
-import com.example.afroaroma.controller.AuthController
-import com.example.afroaroma.controller.FirestoreController
+import com.example.afroaroma.model.AuthModel
+import com.example.afroaroma.model.FirestoreModel
 import com.example.afroaroma.databinding.FragmentEditDrinkBinding
 import com.example.afroaroma.model.Drink
 import android.widget.Button
@@ -20,13 +20,14 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
+import com.example.afroaroma.R
 
 
-class editDrinkFragment : Fragment() {
+class EditDrinkFragment : Fragment() {
 
     private lateinit var binding: FragmentEditDrinkBinding
-    private lateinit var authController: AuthController
-    private lateinit var firestoreController: FirestoreController
+    private lateinit var authModel: AuthModel
+    private lateinit var firestoreModel: FirestoreModel
 
     private lateinit var nameEditText: EditText
     private lateinit var descriptionEditText: EditText
@@ -55,8 +56,8 @@ class editDrinkFragment : Fragment() {
         binding = FragmentEditDrinkBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        authController = AuthController()
-        firestoreController = FirestoreController()
+        authModel = AuthModel()
+        firestoreModel = FirestoreModel()
 
         btnBack = binding.btnBack
         nameEditText = binding.editNameEditText
@@ -160,7 +161,7 @@ class editDrinkFragment : Fragment() {
             selectedDrink.quantity = quantityEditText.text.toString().toLong()
 
 
-            firestoreController.updateDrink(
+            firestoreModel.updateDrink(
                 selectedDrink,
                 onSuccess = {
                     progressBar.visibility = View.GONE
@@ -178,7 +179,7 @@ class editDrinkFragment : Fragment() {
         progressBar.visibility = View.VISIBLE
         if (selectedImageUri != null) {
             if (selectedDrink != null) {
-                firestoreController.updateDrinkWithImage(
+                firestoreModel.updateDrinkWithImage(
                     selectedDrink,
                     selectedImageUri!!,
                     onSuccess = {

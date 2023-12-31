@@ -1,22 +1,17 @@
-package com.example.afroaroma.controller
+package com.example.afroaroma.model
 
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
-import com.example.afroaroma.model.Drink
-import com.example.afroaroma.model.Order
-import com.example.afroaroma.model.User
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
-import java.util.Date
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
 
-class FirestoreController {
+class FirestoreModel {
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val storage = FirebaseStorage.getInstance()

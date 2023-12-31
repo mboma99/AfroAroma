@@ -1,4 +1,4 @@
-package com.example.afroaroma
+package com.example.afroaroma.controller
 
 import android.os.Bundle
 import android.util.Log
@@ -9,25 +9,25 @@ import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.Toast
 import androidx.navigation.Navigation
-import com.example.afroaroma.controller.AuthController
-import com.example.afroaroma.controller.FirestoreController
-import com.example.afroaroma.controller.OrderAdapter
-import com.example.afroaroma.databinding.FragmentAdminMenuBinding
+import com.example.afroaroma.R
+import com.example.afroaroma.model.AuthModel
+import com.example.afroaroma.model.FirestoreModel
 import com.example.afroaroma.databinding.FragmentArchiveOrdersBinding
 import com.example.afroaroma.model.Order
+import com.example.afroaroma.model.OrderAdapter
 
-class archiveOrdersFragment: Fragment() {
+class ArchiveOrdersFragment: Fragment() {
 
     private lateinit var binding: FragmentArchiveOrdersBinding
-    private lateinit var authController: AuthController
-    private lateinit var firestoreController: FirestoreController
+    private lateinit var authModel: AuthModel
+    private lateinit var firestoreModel: FirestoreModel
     private lateinit var archiveOrdersListView: ListView
     private var selectedOrder: Order? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authController = AuthController()
-        firestoreController = FirestoreController()
+        authModel = AuthModel()
+        firestoreModel = FirestoreModel()
     }
 
     override fun onCreateView(
@@ -40,13 +40,13 @@ class archiveOrdersFragment: Fragment() {
 
         archiveOrdersListView = view.findViewById(R.id.archiveOrdersListView)
 
-        authController = AuthController()
-        firestoreController = FirestoreController()
+        authModel = AuthModel()
+        firestoreModel = FirestoreModel()
 
-        val currentUser = authController.getCurrentUserId()
+        val currentUser = authModel.getCurrentUserId()
         if (currentUser != null) {
             val orderList = mutableListOf<Order>()
-            firestoreController.getOrdersList(
+            firestoreModel.getOrdersList(
                 onSuccess = { fetchedOrders ->
                     Log.d("LiveOrdersFragment", "Data retrieved successfully. Number of orders: ${fetchedOrders.size}")
 

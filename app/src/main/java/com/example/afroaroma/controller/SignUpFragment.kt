@@ -1,4 +1,4 @@
-package com.example.afroaroma
+package com.example.afroaroma.controller
 
 import android.content.ContentValues.TAG
 import android.os.Bundle
@@ -7,25 +7,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.Navigation
-import com.example.afroaroma.controller.AuthController
-import com.example.afroaroma.controller.FirestoreController
+import com.example.afroaroma.R
+import com.example.afroaroma.model.AuthModel
+import com.example.afroaroma.model.FirestoreModel
 import com.example.afroaroma.databinding.FragmentSignUpBinding
 import com.example.afroaroma.model.User
 
-class signUpFragment : Fragment() {
+class SignUpFragment : Fragment() {
 
     private lateinit var binding: FragmentSignUpBinding
-    private lateinit var authController: AuthController
-    private lateinit var firestoreController: FirestoreController
+    private lateinit var authModel: AuthModel
+    private lateinit var firestoreModel: FirestoreModel
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authController = AuthController()
-        firestoreController = FirestoreController()
+        authModel = AuthModel()
+        firestoreModel = FirestoreModel()
     }
 
     override fun onCreateView(
@@ -76,16 +76,16 @@ class signUpFragment : Fragment() {
     }
 
     private fun signUpWithEmailPassword(email: String, password: String, firstName: String, lastName: String) {
-        authController.signUpWithEmailPassword(email, password, firstName, lastName, ::onSignUpComplete)
+        authModel.signUpWithEmailPassword(email, password, firstName, lastName, ::onSignUpComplete)
     }
 
     private fun onSignUpComplete(user: User?) {
         val errorMessageText = binding.textError
 
         if (user != null) {
-            firestoreController.addUserToDB(user, ::onUserAddedToDB)
+            firestoreModel.addUserToDB(user, ::onUserAddedToDB)
         } else {
-            val exception = authController.getLastAuthException()
+            val exception = authModel.getLastAuthException()
             val errorMessage = when (exception?.errorCode) {
                 "ERROR_WRONG_PASSWORD" -> "Incorrect password"
                 "ERROR_USER_NOT_FOUND" -> "Email not recognized"
@@ -101,8 +101,8 @@ class signUpFragment : Fragment() {
     }
 
     private fun checkUserRoles() {
-        val userId = authController.getFirebaseUser()?.uid
-        firestoreController.checkUserRoles(userId,
+        val userId = authModel.getFirebaseUser()?.uid
+        firestoreModel.checkUserRoles(userId,
             onSuccess = { isAdmin ->
                 if (isAdmin) {
                     redirectToAdmin()

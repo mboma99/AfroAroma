@@ -1,4 +1,4 @@
-package com.example.afroaroma
+package com.example.afroaroma.controller
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
@@ -11,18 +11,17 @@ import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
 import androidx.navigation.Navigation
-import com.example.afroaroma.controller.DrinkAdapterOrders
-import com.example.afroaroma.controller.FirestoreController
+import com.example.afroaroma.R
+import com.example.afroaroma.model.DrinkAdapterOrders
+import com.example.afroaroma.model.FirestoreModel
 import com.example.afroaroma.databinding.FragmentArchivedOrderViewBinding
-import com.example.afroaroma.model.Drink
 import com.example.afroaroma.model.Order
-import kotlin.math.log
 
 class ArchivedOrderViewFragment : Fragment() {
 
     private lateinit var binding: FragmentArchivedOrderViewBinding
     private lateinit var archivedOrderListView: ListView
-    private lateinit var firestoreController: FirestoreController
+    private lateinit var firestoreModel: FirestoreModel
     private var selectedOrder: Order? = null
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -42,7 +41,7 @@ class ArchivedOrderViewFragment : Fragment() {
             }
         }
 
-        firestoreController = FirestoreController()
+        firestoreModel = FirestoreModel()
 
 
         val orderItemsAdapter = selectedOrder?.let { DrinkAdapterOrders(requireContext(), it.drinksList) }
@@ -66,7 +65,7 @@ class ArchivedOrderViewFragment : Fragment() {
         val totalCostTextView: TextView = view.findViewById(R.id.totalCostTextView)
 
         selectedOrder?.let {
-            firestoreController.getUser(it.userId,
+            firestoreModel.getUser(it.userId,
                 onSuccess = { user ->
                     if (user != null) {
                         addTitleTextView.text = "View ${user.firstName?.capitalizeFirstLetter()}'s Order"

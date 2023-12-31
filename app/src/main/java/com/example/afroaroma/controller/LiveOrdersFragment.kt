@@ -1,4 +1,4 @@
-package com.example.afroaroma
+package com.example.afroaroma.controller
 
 import android.os.Bundle
 import android.util.Log
@@ -12,19 +12,19 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.Navigation
-import com.example.afroaroma.controller.AuthController
-import com.example.afroaroma.controller.FirestoreController
+import com.example.afroaroma.R
+import com.example.afroaroma.model.AuthModel
+import com.example.afroaroma.model.FirestoreModel
 
-import com.example.afroaroma.controller.OrderAdapter
 import com.example.afroaroma.model.Order
-import com.google.android.gms.tasks.Task
+import com.example.afroaroma.model.OrderAdapter
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.RemoteMessage
 
 
 class LiveOrdersFragment : Fragment() {
-    private lateinit var authController: AuthController
-    private lateinit var firestoreController: FirestoreController
+    private lateinit var authModel: AuthModel
+    private lateinit var firestoreModel: FirestoreModel
     private lateinit var activeOrdersListView: ListView
     private lateinit var btnBack: ImageView
     private lateinit var btnUpdate: Button
@@ -35,8 +35,8 @@ class LiveOrdersFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authController = AuthController()
-        firestoreController = FirestoreController()
+        authModel = AuthModel()
+        firestoreModel = FirestoreModel()
     }
 
     override fun onCreateView(
@@ -64,9 +64,9 @@ class LiveOrdersFragment : Fragment() {
     }
 
     private fun loadOrders() {
-        val currentUser = authController.getCurrentUserId()
+        val currentUser = authModel.getCurrentUserId()
         if (currentUser != null) {
-            firestoreController.getOrdersList(
+            firestoreModel.getOrdersList(
                 onSuccess = { fetchedOrders ->
                     try {
                         val orderList = fetchedOrders.filter { it.orderStatus == "Ready" || it.orderStatus == "Preparing" }
@@ -155,7 +155,7 @@ class LiveOrdersFragment : Fragment() {
     private fun updateOrderStatus(orderId: String, newStatus: String) {
         Log.d("LiveOrdersFragment", "Updating order status: $newStatus for orderId: $orderId")
 
-        firestoreController.updateOrderStatus(
+        firestoreModel.updateOrderStatus(
             orderId,
             newStatus,
             onSuccess = {

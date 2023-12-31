@@ -1,5 +1,4 @@
-package com.example.afroaroma.controller
-import com.example.afroaroma.model.User
+package com.example.afroaroma.model
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.AuthResult
@@ -7,7 +6,7 @@ import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
 import kotlin.reflect.KFunction1
 
-class AuthController {
+class AuthModel {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private var lastAuthException: FirebaseAuthException? = null
