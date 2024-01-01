@@ -53,68 +53,202 @@
                     android:textSize="25sp"
                     android:textColor="@color/black"/>
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/userNameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User Name: "
-                android:textSize="18sp"
-                android:fontFamily="@font/outfit_regular"
-                android:textColor="@color/dark_gray" />
-
-            <TextView
-                android:id="@+id/userEmailTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User Email: "
-                android:textSize="18sp"
-                android:fontFamily="@font/outfit_regular"
-                android:textColor="@color/dark_gray"
-                android:layout_marginBottom="10dp"/>
-
-            <TextView
-                android:id="@+id/orderIdTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Order ID: "
-                android:textSize="18sp"
-                android:fontFamily="@font/outfit_regular"
-                android:textColor="@color/dark_gray"
-                android:layout_marginTop="30dp"/>
-
-            <TextView
-                android:id="@+id/orderDateTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Order Date: "
-                android:textSize="18sp"
-                android:fontFamily="@font/outfit_regular"
-                android:layout_marginTop="8dp"
-                android:textColor="@color/dark_gray"/>
-
-            <ListView
-                android:id="@+id/archivedOrderListView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:divider="@android:color/darker_gray"
-                android:dividerHeight="1dp"
-                android:padding="10dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/round_white_button"
-                android:layout_marginTop="16dp"/>
+                android:orientation="vertical"
+                android:padding="15dp">
 
-            <TextView
-                android:id="@+id/totalCostTextView"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                android:text="Total cost: "
-                android:textSize="22dp"
-                android:fontFamily="@font/outfit_bold"
-                android:background="@drawable/round_white_button"
-                android:layout_marginTop="20dp"
-                android:textColor="@color/dark_gray"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:id="@+id/userNameTextLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User Name: "
+                        android:textSize="18sp"
+                        android:fontFamily="@font/outfit_bold"
+                        android:textColor="@color/dark_gray"/>
+                    <TextView
+                        android:id="@+id/userNameTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:fontFamily="@font/outfit_regular"
+                        android:textColor="@color/dark_gray"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/userEmailTextLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User Email: "
+                        android:textSize="18sp"
+                        android:fontFamily="@font/outfit_bold"
+                        android:textColor="@color/dark_gray" />
+                    <TextView
+                        android:id="@+id/userEmailTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:fontFamily="@font/outfit_regular"
+                        android:textColor="@color/dark_gray"
+                        android:layout_marginBottom="10dp"/>
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:id="@+id/orderIdTextLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Order ID: "
+                        android:textSize="18sp"
+                        android:fontFamily="@font/outfit_bold"
+                        android:textColor="@color/dark_gray"/>
+                    <TextView
+                        android:id="@+id/orderIdTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:fontFamily="@font/outfit_regular"
+                        android:textColor="@color/dark_gray"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:id="@+id/orderDateTextLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Order Date: "
+                        android:textSize="18sp"
+                        android:fontFamily="@font/outfit_bold"
+                        android:textColor="@color/dark_gray"/>
+                    <TextView
+                        android:id="@+id/orderDateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="18sp"
+                        android:fontFamily="@font/outfit_regular"
+                        android:textColor="@color/dark_gray"/>
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@android:color/darker_gray" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/item_drink_selector"
+                    android:fontFamily="@font/outfit_light"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/nameTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/outfit_bold"
+                        android:textSize="18sp"
+                        android:text="DRINK"
+                        android:textColor="@color/dark_gray"/>
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/darker_gray"/>
+                    <TextView
+                        android:id="@+id/quantityTextView"
+                        android:layout_width="0sp"
+                        android:layout_height="wrap_content"
+                        android:text="QTY"
+                        android:layout_weight="0.3"
+                        android:gravity="center"
+                        android:fontFamily="@font/outfit_bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/dark_gray"
+                        android:textStyle="bold"/>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/darker_gray"/>
+
+                    <TextView
+                        android:id="@+id/priceTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="PRICE"
+                        android:gravity="center"
+                        android:fontFamily="@font/outfit_bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/dark_gray"
+                        />
+
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_marginRight="5dp"/>
+
+                <ListView
+                    android:id="@+id/archivedOrderListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:divider="@android:color/darker_gray"
+                    android:dividerHeight="1dp"
+                    android:background="@drawable/round_white_button"/>
+
+                <TextView
+                    android:id="@+id/totalCostTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text=""
+                    android:textSize="22dp"
+                    android:fontFamily="@font/outfit_bold"
+                    android:background="@drawable/round_white_button"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/dark_gray"/>
+
+            </LinearLayout>
+
+
+
 
 
         </LinearLayout>

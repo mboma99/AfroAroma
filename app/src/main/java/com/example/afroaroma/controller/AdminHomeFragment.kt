@@ -57,6 +57,9 @@ class AdminHomeFragment : Fragment() {
         binding.viewArchive.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_adminHomeFragment_to_archiveOrdersFragment)
         }
+        binding.viewFeedback.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_adminHomeFragment_to_feedbackFragment)
+        }
 
         return view
 

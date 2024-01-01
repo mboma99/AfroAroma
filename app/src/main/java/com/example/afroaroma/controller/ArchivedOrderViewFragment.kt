@@ -16,6 +16,9 @@ import com.example.afroaroma.model.DrinkAdapterOrders
 import com.example.afroaroma.model.FirestoreModel
 import com.example.afroaroma.databinding.FragmentArchivedOrderViewBinding
 import com.example.afroaroma.model.Order
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ArchivedOrderViewFragment : Fragment() {
 
@@ -51,13 +54,19 @@ class ArchivedOrderViewFragment : Fragment() {
         val orderDateTextView: TextView = view.findViewById(R.id.orderDateTextView)
 
         if (selectedOrder != null) {
-            binding.orderIdTextView.text = "Order ID:${selectedOrder!!.orderId}"
+            binding.orderIdTextView.text = "${selectedOrder!!.orderId}"
         }
         if (selectedOrder != null) {
-            orderDateTextView.text = "Order Date: ${selectedOrder!!.orderDate}"
+            orderDateTextView.text = "${formatDateToCustomFormat(selectedOrder!!.orderDate)}"
         }
+
+        //act ass back button
         binding.btnBack.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_archivedOrderViewFragment_to_archiveOrdersFragment)
+            if (getFragmentManager() != null) {
+                getFragmentManager()?.popBackStack();
+            }else {
+                Navigation.findNavController(view).navigate(R.id.action_archivedOrderViewFragment_to_archiveOrdersFragment)
+            }
         }
         val userEmailTextView: TextView = view.findViewById(R.id.userEmailTextView)
         val addTitleTextView: TextView = view.findViewById(R.id.addTitleTextView)
@@ -69,8 +78,8 @@ class ArchivedOrderViewFragment : Fragment() {
                 onSuccess = { user ->
                     if (user != null) {
                         addTitleTextView.text = "View ${user.firstName?.capitalizeFirstLetter()}'s Order"
-                        userNameTextView.text = "User: ${user.firstName?.capitalizeFirstLetter()} ${user.lastName?.capitalizeFirstLetter()}"
-                        userEmailTextView.text = "Email: ${user.email}"
+                        userNameTextView.text = "${user.firstName?.capitalizeFirstLetter()} ${user.lastName?.capitalizeFirstLetter()}"
+                        userEmailTextView.text = "${user.email}"
                         val totalCost = selectedOrder?.calculateTotalCost()
                         totalCostTextView.text = "Total Cost: £${"%.2f".format(totalCost)}"
                     } else {
@@ -90,6 +99,11 @@ class ArchivedOrderViewFragment : Fragment() {
 
 
         return view
+    }
+
+    fun formatDateToCustomFormat(date: Date): String {
+        val desiredFormat = SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale.getDefault())
+        return desiredFormat.format(date)
     }
 
     fun String.capitalizeFirstLetter(): String {

@@ -39,8 +39,6 @@ class AdminMenuFragment : Fragment() {
         binding = FragmentAdminMenuBinding.inflate(inflater, container, false)
         val view = binding.root
 
-
-        // Initialize the ListView from the layout
         menuListView = binding.menuListView
 
         // Initialize your authController, firestoreController, or any other necessary components.

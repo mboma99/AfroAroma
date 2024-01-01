@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.FeedbackFragment"
+    android:background="@drawable/background">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:src="@drawable/back_icon" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/pageHead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/outfit_regular"
+                    android:letterSpacing="0.2"
+                    android:text="@string/feedback"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_white_button"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="25dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/ratingTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="1.5"
+                            android:layout_marginRight="3dp"
+                            android:text="RATING"
+                            android:textSize="20sp"
+                            android:fontFamily="@font/outfit_bold"
+                            android:textColor="@color/dark_gray"
+                            android:gravity="center"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/darker_gray"
+                            android:layout_marginRight="5dp"/>
+
+                        <TextView
+                            android:id="@+id/feedbackHeadlineTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:text="HEADLINE"
+                            android:gravity="center"
+                            android:fontFamily="@font/outfit_bold"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="20sp"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/darker_gray"
+                            android:layout_marginRight="5dp"/>
+
+                        <TextView
+                            android:id="@+id/statusReadTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:text="STATUS"
+                            android:textSize="20dp"
+                            android:gravity="center"
+                            android:fontFamily="@font/outfit_bold"
+                            android:textColor="@color/dark_gray"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@android:color/darker_gray"/>
+
+
+
+                    <ListView
+                        android:id="@+id/feedbackListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:background="@drawable/round_white_button" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnViewFeedback"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/round_dark_cream_button"
+                    android:fontFamily="@font/outfit_light"
+                    android:letterSpacing="0.15"
+                    android:text="View"
+                    android:textColor="@color/white" />
+
+
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+
+
+</FrameLayout>

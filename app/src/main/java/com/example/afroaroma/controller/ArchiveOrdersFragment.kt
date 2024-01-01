@@ -62,7 +62,7 @@ class ArchiveOrdersFragment: Fragment() {
                     archiveOrdersListView.setOnItemClickListener { _, _, position, _ ->
                         // Handle item click for collected orders
                         selectedOrder = collectedOrdersAdapter.getItem(position) as Order
-                        Toast.makeText(requireContext(), "Clicked on archived order: ${selectedOrder!!.orderId}", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(requireContext(), "Clicked on archived order: ${selectedOrder!!.orderId}", Toast.LENGTH_SHORT).show()
                     }
 
                     archiveOrdersListView.choiceMode = ListView.CHOICE_MODE_SINGLE

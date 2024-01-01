@@ -1,61 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <!-- res/layout/item_feedback.xml -->
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/item_drink_selector"
-        android:fontFamily="@font/outfit_light"
-        tools:ignore="MissingConstraints">
+        android:gravity="center"
+        android:background="@drawable/item_drink_selector">
 
         <TextView
-            android:id="@+id/nameTextView"
+            android:id="@+id/ratingTextView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_weight="1.5"
+            android:layout_marginRight="3dp"
+            android:text="5 / 5"
+            android:textSize="20sp"
             android:fontFamily="@font/outfit_regular"
-            android:textSize="18sp"
             android:textColor="@color/dark_gray"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"/>
-        <TextView
-            android:id="@+id/quantityTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="0.3"
-            android:fontFamily="@font/outfit_regular"
-            android:textSize="16sp"
-            android:textColor="@color/dark_gray"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
+            android:gravity="center"/>
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray"
+            android:layout_marginRight="5dp"/>
 
         <TextView
-            android:id="@+id/priceTextView"
+            android:id="@+id/feedbackHeadlineTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="0.5"
+            android:layout_weight="4"
+            android:text="test"
+            android:gravity=""
             android:fontFamily="@font/outfit_regular"
-            android:textSize="16sp"
             android:textColor="@color/dark_gray"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
+            android:textSize="20sp"/>
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"
+            android:layout_marginRight="5dp"/>
+
+        <TextView
+            android:id="@+id/statusReadTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:text="read Status"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:fontFamily="@font/outfit_regular"
+            android:textColor="@color/dark_gray"/>
 
     </LinearLayout>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

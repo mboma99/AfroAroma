@@ -8,6 +8,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
+import java.util.Date
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -120,6 +121,37 @@ class FirestoreModel {
             }
             .addOnFailureListener { e ->
                 Log.e(TAG, "Error getting document for userId: $userId", e)
+                onFailure()
+            }
+    }
+
+    fun getFeedbackList(onSuccess: (List<Feedback>) -> Unit, onFailure: () -> Unit) {
+        val feedbackRef = db.collection("Feedback")
+
+        feedbackRef.get()
+            .addOnSuccessListener { documents ->
+                val feedbackList = mutableListOf<Feedback>()
+
+                for (document in documents) {
+                    val feedbackId = document.id
+                    val feedbackText = document.getString("feedback") ?: ""
+                    val feedbackHeadline = document.getString("feedbackHeadline") ?: ""
+                    val orderId = document.getString("orderId") ?: ""
+                    val readStatus = document.getBoolean("readStatus")?: false
+                    val rating: Int = try {
+                        document.getLong("rating")?.toInt() ?: 0
+                    } catch (e: Exception) {
+                        0
+                    }
+
+                    val feedback = Feedback(feedbackId, feedbackText, feedbackHeadline, orderId, rating, readStatus)
+                    feedbackList.add(feedback)
+                }
+
+                onSuccess(feedbackList)
+            }
+            .addOnFailureListener {
+                // Handle the case where getting the feedback fails
                 onFailure()
             }
     }
@@ -310,38 +342,6 @@ class FirestoreModel {
             }
     }
 
-    fun deleteDrink2(drink: Drink, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
-        val drinkRef = db.collection("Menu").document(drink.drinkId)
-        val imageUrl = drink.imageUrl
-        val storageRef = imageUrl?.let { storage.getReferenceFromUrl(it) }
-
-        if (imageUrl.isNullOrBlank()) {
-            // No image URL found, just delete the drink data
-            drinkRef.delete()
-                .addOnSuccessListener {
-                    onSuccess()
-                }
-                .addOnFailureListener { e ->
-                    onFailure(e.message ?: "Error deleting drink")
-                }
-        } else {
-            // Delete the image from Firebase Storage
-            Log.d("DeleteItem", "this has photo")
-            storageRef?.delete()?.addOnSuccessListener {
-                drinkRef.delete()
-                    .addOnSuccessListener {
-                        onSuccess()
-                    }
-                    .addOnFailureListener { e ->
-                        onFailure(e.message ?: "Error deleting drink")
-                    }
-            }?.addOnFailureListener { e ->
-                onFailure(e.message ?: "Error deleting image")
-            }
-        }
-    }
-
-
     fun getDrinkById(drinkId: String, onSuccess: (Drink?) -> Unit, onFailure: () -> Unit) {
         val drinksRef = db.collection("Menu").document(drinkId)
 
@@ -457,14 +457,92 @@ class FirestoreModel {
     }
 
 
+    fun getOrderById(orderId: String, onSuccess: (Order?) -> Unit, onFailure: () -> Unit) {
+        val orderRef = db.collection("Orders").document(orderId)
+        orderRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val userId = documentSnapshot.getString("userId") ?: ""
+                    val orderDate = documentSnapshot.getDate("orderDate") ?: Date()
+                    val orderStatus = documentSnapshot.getString("orderFullfilled")
+                    val drinksList = mutableListOf<Drink>()
+
+                    orderId?.let { uid ->
+                        if (userId != null) {
+                            getItemsForUser(uid,
+                                onSuccess = { items ->
+                                    //Log.d("ViewOrderItemsCount", "getOrdersList: Successfully fetched items ${items.size}")
+
+                                    val drinksFetchCount = AtomicInteger(items.size)
+
+                                    for (item in items) {
+                                        val itemId = item["drinkId"] as String
+                                        val quantity = item["quantity"] as Long
+
+                                        getDrinksForItemId(itemId, quantity,
+                                            onSuccess = { drinks ->
+                                                //Log.d("ViewOrderActivityDrinks", "getOrdersList: Successfully fetched drinks for ${drinks}")
+
+                                                drinksList.addAll(drinks)
+
+                                                if (drinksFetchCount.decrementAndGet() == 0) {
+                                                    // All drinks for this order have been fetched
+                                                    val order = orderDate?.let {
+                                                        Order(orderId, userId, drinksList,
+                                                            it, orderStatus)
+                                                    }
+                                                    onSuccess(order)
+                                                }
+                                            },
+                                            onFailure = { exception ->
+                                                // Handle failure
+                                                Log.e("ViewOrderActivity", "itemList: Error fetching drinks: ${exception.message}")
+                                            }
+                                        )
+                                    }
+                                },
+                                onFailure = { exception ->
+                                    // Handle failure
+                                    Log.e("ViewOrderActivity", "getOrdersList: Error fetching items for user: ${exception.message}")
+                                }
+                            )
+                        }
+                    }
+
+                    val order = Order(orderId, userId, drinksList as List<Drink>, orderDate, orderStatus)
+                    onSuccess(order)
+                } else {
+                    Log.d(TAG, "Document does not exist for orderId: $orderId")
+                    onSuccess(null)
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error getting document for orderId: $orderId", e)
+                onFailure()
+            }
+    }
+
+    fun updateReadStatus(feebackId: String,onSuccess: () -> Unit, onFailure: (Exception) -> Unit ){
+        val feedbackRef = db.document("Feedback/$feebackId")
+
+        val updateData = mapOf(
+            "readStatus" to true
+        )
+        feedbackRef
+            .update(updateData)
+            .addOnSuccessListener {
+                onSuccess()
+            }.addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    }
+
     fun updateOrderStatus(orderId: String, newStatus: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         val orderRef = db.collection("Orders").document(orderId)
 
-        // Create a map with the new order status
         val updateData = mapOf(
             "orderFullfilled" to newStatus
         )
-
         orderRef
             .update(updateData)
             .addOnSuccessListener {
@@ -531,6 +609,10 @@ class FirestoreModel {
                 onFailure(exception)
             }
     }
+}
+
+private fun <E> List<E>?.addAll(drinks: E) {
+
 }
 
 
