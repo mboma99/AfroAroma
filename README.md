@@ -1,6 +1,6 @@
-# Café Android App
+# Café AfroAroma
 
-Welcome to the Café Android App! This app is designed to manage a café's menu, orders, and more. The application is built using Kotlin, Firebase Authentication, Firestore for data storage, and Firebase Storage for handling images.
+Welcome to the AfroAroma! This app is designed to manage a café's menu, orders, and more. The application is built using Kotlin, Firebase Authentication, Firestore for data storage, and Firebase Storage for handling images.
 
 ## Features
 
