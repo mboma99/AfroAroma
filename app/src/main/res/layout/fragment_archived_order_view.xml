@@ -179,7 +179,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/outfit_bold"
                         android:textSize="18sp"
-                        android:text="DRINK"
+                        android:text="PRODUCT"
                         android:textColor="@color/dark_gray"/>
                     <View
                         android:layout_width="2dp"
