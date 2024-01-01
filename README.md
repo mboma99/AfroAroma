@@ -25,7 +25,8 @@ The app follows the Model-View-Controller (MVC) architecture to organize code an
 - **View:** Displays the UI and interacts with the user.
 - **Controller:** Handles user input, updates the model, and updates the view.
 
-  ![image](https://github.com/mboma99/AfroAroma/assets/42808235/309a5d02-c194-4a9d-86b6-119a199154f8)
+  ![image](https://github.com/mboma99/AfroAroma/assets/42808235/9dcf8017-426d-4cfc-9719-2ef571f9db4e)
+
 
 
 ## Tech Stack
