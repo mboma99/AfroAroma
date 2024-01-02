@@ -16,21 +16,21 @@ import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.TypeSafeMatcher
-import org.hamcrest.core.IsInstanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class LoginToCustomerTest {
+class NavigateToAdminHomeTest {
 
     @Rule
     @JvmField
     var mActivityScenarioRule = ActivityScenarioRule(SplashActivity::class.java)
 
     @Test
-    fun loginToCustomerTest() {
+    fun loginToAdminTest() {
+        Thread.sleep(7000)
         val appCompatButton = onView(
             allOf(
                 withId(R.id.btnLoginPage), withText("login"),
@@ -58,7 +58,7 @@ class LoginToCustomerTest {
                 )
             )
         )
-        appCompatEditText.perform(scrollTo(), replaceText("test@test.com"), closeSoftKeyboard())
+        appCompatEditText.perform(scrollTo(), replaceText("admin@admin.com"), closeSoftKeyboard())
 
         val appCompatEditText2 = onView(
             allOf(
@@ -75,6 +75,7 @@ class LoginToCustomerTest {
         appCompatEditText2.perform(scrollTo(), replaceText("123456@"), closeSoftKeyboard())
 
         val appCompatButton2 = onView(
+
             allOf(
                 withId(R.id.btnLoginPage), withText("login"),
                 childAtPosition(
@@ -87,16 +88,15 @@ class LoginToCustomerTest {
             )
         )
         appCompatButton2.perform(scrollTo(), click())
-
-        val frameLayout = onView(
-            allOf(IsInstanceOf.instanceOf(android.widget.FrameLayout::class.java), isDisplayed())
+        Thread.sleep(3000)
+        val textView = onView(
+            allOf(
+                withId(R.id.txtWelcome), withText("Welcome back, admin"),
+                withParent(withParent(withId(R.id.fragmentContainerView2))),
+                isDisplayed()
+            )
         )
-        frameLayout.check(matches(isDisplayed()))
-
-        val frameLayout2 = onView(
-            allOf(IsInstanceOf.instanceOf(android.widget.FrameLayout::class.java), isDisplayed())
-        )
-        frameLayout2.check(matches(isDisplayed()))
+        textView.check(matches(withText("Welcome back, admin")))
     }
 
     private fun childAtPosition(

@@ -1,0 +1,142 @@
+package com.example.afroaroma.controller
+
+
+import android.view.View
+import android.view.ViewGroup
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.assertion.ViewAssertions.*
+import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.LargeTest
+import com.example.afroaroma.R
+import org.hamcrest.Description
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.`is`
+import org.hamcrest.TypeSafeMatcher
+import org.hamcrest.core.IsInstanceOf
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+
+@LargeTest
+@RunWith(AndroidJUnit4::class)
+class FailedLoginAttemptsTest {
+
+    @Rule
+    @JvmField
+    var mActivityScenarioRule = ActivityScenarioRule(SplashActivity::class.java)
+
+    @Test
+    fun failedLoginAttemptsTest() {
+        Thread.sleep(8000)
+        val appCompatButton = onView(
+            allOf(
+                withId(R.id.btnLoginPage), withText("login"),
+                childAtPosition(
+                    childAtPosition(
+                        withClassName(`is`("android.widget.FrameLayout")),
+                        1
+                    ),
+                    3
+                ),
+                isDisplayed()
+            )
+        )
+        appCompatButton.perform(click())
+
+        val appCompatButton2 = onView(
+            allOf(
+                withId(R.id.btnLoginPage), withText("login"),
+                childAtPosition(
+                    childAtPosition(
+                        withClassName(`is`("android.widget.ScrollView")),
+                        0
+                    ),
+                    5
+                )
+            )
+        )
+        appCompatButton2.perform(scrollTo(), click())
+        Thread.sleep(3000)
+        val textView = onView(
+            allOf(
+                withId(R.id.textError), withText("Fill in all required field(s)"),
+                withParent(withParent(IsInstanceOf.instanceOf(android.widget.ScrollView::class.java))),
+                isDisplayed()
+            )
+        )
+        textView.check(matches(withText("Fill in all required field(s)")))
+
+        val appCompatEditText = onView(
+            allOf(
+                withId(R.id.email),
+                childAtPosition(
+                    childAtPosition(
+                        withClassName(`is`("android.widget.ScrollView")),
+                        0
+                    ),
+                    2
+                )
+            )
+        )
+        appCompatEditText.perform(scrollTo(), replaceText("admin@admin.com"), closeSoftKeyboard())
+
+        val appCompatEditText2 = onView(
+            allOf(
+                withId(R.id.password),
+                childAtPosition(
+                    childAtPosition(
+                        withClassName(`is`("android.widget.ScrollView")),
+                        0
+                    ),
+                    3
+                )
+            )
+        )
+        appCompatEditText2.perform(scrollTo(), replaceText("wrongpassword"), closeSoftKeyboard())
+
+        val appCompatButton3 = onView(
+            allOf(
+                withId(R.id.btnLoginPage), withText("login"),
+                childAtPosition(
+                    childAtPosition(
+                        withClassName(`is`("android.widget.ScrollView")),
+                        0
+                    ),
+                    5
+                )
+            )
+        )
+        appCompatButton3.perform(scrollTo(), click())
+        Thread.sleep(3000)
+        val textView2 = onView(
+            allOf(
+                withId(R.id.textError), withText("Authentication failed. Please try again."),
+                withParent(withParent(IsInstanceOf.instanceOf(android.widget.ScrollView::class.java))),
+                isDisplayed()
+            )
+        )
+        textView2.check(matches(withText("Authentication failed. Please try again.")))
+    }
+
+    private fun childAtPosition(
+        parentMatcher: Matcher<View>, position: Int
+    ): Matcher<View> {
+
+        return object : TypeSafeMatcher<View>() {
+            override fun describeTo(description: Description) {
+                description.appendText("Child at position $position in parent ")
+                parentMatcher.describeTo(description)
+            }
+
+            public override fun matchesSafely(view: View): Boolean {
+                val parent = view.parent
+                return parent is ViewGroup && parentMatcher.matches(parent)
+                        && view == parent.getChildAt(position)
+            }
+        }
+    }
+}

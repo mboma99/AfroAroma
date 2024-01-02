@@ -14,6 +14,7 @@ import com.example.afroaroma.R
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.`is`
 import org.hamcrest.TypeSafeMatcher
 import org.hamcrest.core.IsInstanceOf
 import org.junit.Rule
@@ -22,23 +23,23 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class AdminViewOrdersTest {
+class NavigateToCreateAccountPageTest {
 
     @Rule
     @JvmField
     var mActivityScenarioRule = ActivityScenarioRule(SplashActivity::class.java)
 
     @Test
-    fun adminViewOrdersTest() {
+    fun navigateToCreateAccountPageTest() {
         val appCompatButton = onView(
             allOf(
-                withId(R.id.viewOrders), withText("view orders"),
+                withId(R.id.btnSignUpPage), withText("sign up"),
                 childAtPosition(
                     childAtPosition(
-                        withId(R.id.fragmentContainerView2),
-                        0
+                        withClassName(`is`("android.widget.FrameLayout")),
+                        1
                     ),
-                    5
+                    2
                 ),
                 isDisplayed()
             )
@@ -47,29 +48,12 @@ class AdminViewOrdersTest {
 
         val textView = onView(
             allOf(
-                withId(R.id.drinkNameTextView), withText("Ethiopian Highlands Espresso   x2"),
-                withParent(withParent(IsInstanceOf.instanceOf(android.widget.LinearLayout::class.java))),
+                withId(R.id.textView2), withText("JOIN THE TRIBE"),
+                withParent(withParent(IsInstanceOf.instanceOf(android.widget.ScrollView::class.java))),
                 isDisplayed()
             )
         )
-        textView.check(matches(isDisplayed()))
-
-        val linearLayout = onView(
-            allOf(
-                withParent(withParent(IsInstanceOf.instanceOf(android.view.ViewGroup::class.java))),
-                isDisplayed()
-            )
-        )
-        linearLayout.check(matches(isDisplayed()))
-
-        val textView2 = onView(
-            allOf(
-                withId(R.id.orderStatusTextView), withText("Ready"),
-                withParent(withParent(IsInstanceOf.instanceOf(android.view.ViewGroup::class.java))),
-                isDisplayed()
-            )
-        )
-        textView2.check(matches(isDisplayed()))
+        textView.check(matches(withText("JOIN THE TRIBE")))
     }
 
     private fun childAtPosition(

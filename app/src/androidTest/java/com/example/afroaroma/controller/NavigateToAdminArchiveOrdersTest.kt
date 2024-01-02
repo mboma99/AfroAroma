@@ -23,14 +23,15 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class LoginToAdminTest {
+class NavigateToAdminArchiveOrdersTest {
 
     @Rule
     @JvmField
     var mActivityScenarioRule = ActivityScenarioRule(SplashActivity::class.java)
 
     @Test
-    fun loginToAdminTest() {
+    fun navigateToAdminArchiveOrdersTest() {
+        Thread.sleep(7000)
         val appCompatButton = onView(
             allOf(
                 withId(R.id.btnLoginPage), withText("login"),
@@ -45,11 +46,6 @@ class LoginToAdminTest {
             )
         )
         appCompatButton.perform(click())
-
-        val frameLayout = onView(
-            allOf(IsInstanceOf.instanceOf(android.widget.FrameLayout::class.java), isDisplayed())
-        )
-        frameLayout.check(matches(isDisplayed()))
 
         val appCompatEditText = onView(
             allOf(
@@ -79,20 +75,6 @@ class LoginToAdminTest {
         )
         appCompatEditText2.perform(scrollTo(), replaceText("123456@"), closeSoftKeyboard())
 
-        val appCompatEditText3 = onView(
-            allOf(
-                withId(R.id.password), withText("123456@"),
-                childAtPosition(
-                    childAtPosition(
-                        withClassName(`is`("android.widget.ScrollView")),
-                        0
-                    ),
-                    3
-                )
-            )
-        )
-        appCompatEditText3.perform(pressImeActionButton())
-
         val appCompatButton2 = onView(
             allOf(
                 withId(R.id.btnLoginPage), withText("login"),
@@ -106,11 +88,30 @@ class LoginToAdminTest {
             )
         )
         appCompatButton2.perform(scrollTo(), click())
-
-        val frameLayout2 = onView(
-            allOf(IsInstanceOf.instanceOf(android.widget.FrameLayout::class.java), isDisplayed())
+        Thread.sleep(3000)
+        val appCompatButton3 = onView(
+            allOf(
+                withId(R.id.viewArchive), withText("Archived Orders"),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.fragmentContainerView2),
+                        0
+                    ),
+                    6
+                ),
+                isDisplayed()
+            )
         )
-        frameLayout2.check(matches(isDisplayed()))
+        appCompatButton3.perform(click())
+        Thread.sleep(3000)
+        val textView = onView(
+            allOf(
+                withId(R.id.pageHead), withText("Archived Orders"),
+                withParent(withParent(IsInstanceOf.instanceOf(android.widget.RelativeLayout::class.java))),
+                isDisplayed()
+            )
+        )
+        textView.check(matches(withText("Archived Orders")))
     }
 
     private fun childAtPosition(
