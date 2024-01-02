@@ -1,4 +1,4 @@
-package com.example.afroaroma
+package com.example.afroaroma.controller
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
-import com.example.afroaroma.controller.AuthController
-import com.example.afroaroma.controller.FirestoreController
+import com.example.afroaroma.R
+import com.example.afroaroma.model.AuthModel
+import com.example.afroaroma.model.FirestoreModel
 import com.example.afroaroma.databinding.FragmentAdminHomeBinding
-import com.example.afroaroma.databinding.FragmentLoginBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -17,15 +17,15 @@ import com.google.firebase.ktx.Firebase
 class AdminHomeFragment : Fragment() {
 
     private lateinit var binding: FragmentAdminHomeBinding
-    private lateinit var authController: AuthController
-    private lateinit var firestoreController: FirestoreController
+    private lateinit var authModel: AuthModel
+    private lateinit var firestoreModel: FirestoreModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        authController = AuthController()
-        firestoreController = FirestoreController()
+        authModel = AuthModel()
+        firestoreModel = FirestoreModel()
 
         binding = FragmentAdminHomeBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -34,9 +34,9 @@ class AdminHomeFragment : Fragment() {
             signOut()
         }
 
-        val currentUser = authController.getCurrentUserId()
+        val currentUser = authModel.getCurrentUserId()
         if (currentUser != null) {
-            firestoreController.getUserFirstName(currentUser,
+            firestoreModel.getUserFirstName(currentUser,
                 onSuccess = { firstName ->
                     binding.txtWelcome.text = "Welcome back, ${firstName}"
                 },
@@ -56,6 +56,9 @@ class AdminHomeFragment : Fragment() {
 
         binding.viewArchive.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_adminHomeFragment_to_archiveOrdersFragment)
+        }
+        binding.viewFeedback.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_adminHomeFragment_to_feedbackFragment)
         }
 
         return view

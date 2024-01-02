@@ -1,4 +1,4 @@
-package com.example.afroaroma
+package com.example.afroaroma.controller
 
 import android.content.ContentValues
 import android.os.Bundle
@@ -9,22 +9,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
-import com.example.afroaroma.controller.AuthController
-import com.example.afroaroma.controller.FirestoreController
-import com.example.afroaroma.databinding.FragmentLoginBinding
-import com.example.afroaroma.databinding.FragmentSignUpBinding
+import com.example.afroaroma.R
+import com.example.afroaroma.model.AuthModel
+import com.example.afroaroma.model.FirestoreModel
 import com.example.afroaroma.databinding.FragmentSplashBinding
 
 class SplashFragment : Fragment() {
 
     private lateinit var binding: FragmentSplashBinding
-    private lateinit var authController: AuthController
-    private lateinit var firestoreController: FirestoreController
+    private lateinit var authModel: AuthModel
+    private lateinit var firestoreModel: FirestoreModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authController = AuthController()
-        firestoreController = FirestoreController()
+        authModel = AuthModel()
+        firestoreModel = FirestoreModel()
 
     }
 
@@ -37,7 +36,7 @@ class SplashFragment : Fragment() {
         val view = binding.root
 
         Handler().postDelayed({
-            val userId = authController.getFirebaseUser()?.uid
+            val userId = authModel.getFirebaseUser()?.uid
             if (userId != null) {
                 navUserRoles(userId)
             } else {
@@ -56,7 +55,7 @@ class SplashFragment : Fragment() {
 
 
     private fun navUserRoles(userId: String) {
-        firestoreController.checkUserRoles(userId,
+        firestoreModel.checkUserRoles(userId,
             onSuccess = { isAdmin ->
                 if (isAdmin) {
                     view?.let { Navigation.findNavController(it).navigate(R.id.action_splashActivity_to_adminHomeFragment) }

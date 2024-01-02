@@ -1,4 +1,4 @@
-package com.example.afroaroma
+package com.example.afroaroma.controller
 
 import android.content.ContentValues
 import android.os.Bundle
@@ -9,25 +9,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.Navigation
-import com.example.afroaroma.controller.AuthController
-import com.example.afroaroma.controller.FirestoreController
+import com.example.afroaroma.R
+import com.example.afroaroma.model.AuthModel
+import com.example.afroaroma.model.FirestoreModel
 import com.example.afroaroma.databinding.FragmentLoginBinding
-import com.example.afroaroma.databinding.FragmentMainBinding
 import com.example.afroaroma.model.User
 
 
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
-    private lateinit var authController: AuthController
-    private lateinit var firestoreController: FirestoreController
+    private lateinit var authModel: AuthModel
+    private lateinit var firestoreModel: FirestoreModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authController = AuthController()
-        firestoreController = FirestoreController()
+        authModel = AuthModel()
+        firestoreModel = FirestoreModel()
 
     }
     override fun onCreateView(
@@ -61,7 +60,7 @@ class LoginFragment : Fragment() {
                 errorMessageText.text = "Fill in all required field(s)"
             }
         }
-        val userId = authController.getFirebaseUser()?.uid
+        val userId = authModel.getFirebaseUser()?.uid
         if (userId != null) {
             navUserRoles(userId)
         }
@@ -74,16 +73,16 @@ class LoginFragment : Fragment() {
     }
 
     private fun signInWithEmailPassword(email: String, password: String) {
-        authController.signInWithEmailPassword(email, password, ::onSignInComplete)
+        authModel.signInWithEmailPassword(email, password, ::onSignInComplete)
     }
 
     private fun onSignInComplete(user: User?) {
         val errorMessageText = binding.textError // Use the same error message text view
 
         if (user != null) {
-            firestoreController.checkUserRole(user, ::onUserRoleChecked)
+            firestoreModel.checkUserRole(user, ::onUserRoleChecked)
         } else {
-            val exception = authController.getLastAuthException()
+            val exception = authModel.getLastAuthException()
             val errorMessage = when (exception?.errorCode) {
                 "ERROR_WRONG_PASSWORD" -> "Incorrect password"
                 "ERROR_USER_NOT_FOUND" -> "Email not recognized"
@@ -107,7 +106,7 @@ class LoginFragment : Fragment() {
 
     private fun navUserRoles(userId: String) {
         val navController = view?.let { Navigation.findNavController(it) }
-        firestoreController.checkUserRoles(userId,
+        firestoreModel.checkUserRoles(userId,
             onSuccess = { isAdmin ->
                 if (isAdmin) {
                     navController?.navigate(R.id.action_loginFragment_to_adminHomeFragment)

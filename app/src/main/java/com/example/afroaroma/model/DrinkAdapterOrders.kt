@@ -1,5 +1,6 @@
-package com.example.afroaroma.controller
+package com.example.afroaroma.model
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +8,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.afroaroma.R
-import com.example.afroaroma.model.Drink
 
-class DrinkAdapter(private val context: Context, private var drinks: List<Drink>) : BaseAdapter() {
+class DrinkAdapterOrders(private val context: Context, private var drinks: List<Drink>) : BaseAdapter() {
 
     override fun getCount(): Int {
         return drinks.size
@@ -23,28 +23,21 @@ class DrinkAdapter(private val context: Context, private var drinks: List<Drink>
         return position.toLong()
     }
 
+    @SuppressLint("SetTextI18n", "InflateParams")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view: View
 
-        if (convertView == null) {
-
-            view = inflater.inflate(R.layout.item_drink, null)
-        } else {
-
-            view = convertView
-        }
+        val view: View = convertView ?: inflater.inflate(R.layout.item_drinks_orders, null)
 
         val nameTextView: TextView = view.findViewById(R.id.nameTextView)
         val priceTextView: TextView = view.findViewById(R.id.priceTextView)
-        //val quantityTextView: TextView = view.findViewById(R.id.quantityTextView)
+        val quantityTextView: TextView = view.findViewById(R.id.quantityTextView)
 
         // Set the name of the drink in the TextView
         val drink = getItem(position) as Drink
         nameTextView.text = drink.name
         priceTextView.text = "£${"%.2f".format(drink.price)}"
-
-        //quantityTextView.text = "Stock: ${drink.quantity}"
+        quantityTextView.text = "x ${drink.quantity}"
 
         return view
     }

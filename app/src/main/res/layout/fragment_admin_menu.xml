@@ -3,15 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AdminMenuFragment">
-
-    <ImageView
-        android:id="@+id/wallpaperImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/background_admin"
-        android:scaleType="centerCrop"
-        android:adjustViewBounds="true"/>
+    tools:context=".controller.AdminMenuFragment"
+    android:background="@drawable/background_admin">
+    
 
     <ScrollView
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.example.afroaroma
+package com.example.afroaroma.controller
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,20 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
-import com.example.afroaroma.controller.AuthController
-import com.example.afroaroma.controller.FirestoreController
-import com.example.afroaroma.databinding.FragmentAdminMenuBinding
+import com.example.afroaroma.R
+import com.example.afroaroma.model.AuthModel
 import com.example.afroaroma.databinding.FragmentCustomerHomeBinding
 
 
 class CustomerHomeFragment : Fragment() {
 
     private lateinit var binding: FragmentCustomerHomeBinding
-    private lateinit var authController: AuthController
+    private lateinit var authModel: AuthModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authController = AuthController()
+        authModel = AuthModel()
     }
 
     override fun onCreateView(
@@ -35,7 +34,7 @@ class CustomerHomeFragment : Fragment() {
     }
 
     private fun signOut() {
-        authController.signOut()
+        authModel.signOut()
         view?.let { Navigation.findNavController(it).navigate(R.id.action_customerAccountFragment_to_mainFragment) }
     }
 }

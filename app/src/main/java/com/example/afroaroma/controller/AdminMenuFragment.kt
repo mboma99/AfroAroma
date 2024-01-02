@@ -1,4 +1,4 @@
-package com.example.afroaroma
+package com.example.afroaroma.controller
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,26 +9,27 @@ import android.widget.Button
 import android.widget.ListView
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.Navigation
-import com.example.afroaroma.controller.AuthController
-import com.example.afroaroma.controller.DrinkAdapter
-import com.example.afroaroma.controller.FirestoreController
+import com.example.afroaroma.R
+import com.example.afroaroma.model.AuthModel
+import com.example.afroaroma.model.FirestoreModel
 import com.example.afroaroma.databinding.FragmentAdminMenuBinding
 import com.example.afroaroma.model.Drink
+import com.example.afroaroma.model.DrinkAdapter
 
 
 class AdminMenuFragment : Fragment() {
 
     private lateinit var binding: FragmentAdminMenuBinding
-    private lateinit var authController: AuthController
-    private lateinit var firestoreController: FirestoreController
+    private lateinit var authModel: AuthModel
+    private lateinit var firestoreModel: FirestoreModel
     private lateinit var menuListView: ListView
     private lateinit var drinkAdapter: DrinkAdapter
     private var selectedDrink: Drink? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authController = AuthController()
-        firestoreController = FirestoreController()
+        authModel = AuthModel()
+        firestoreModel = FirestoreModel()
     }
 
     override fun onCreateView(
@@ -38,15 +39,13 @@ class AdminMenuFragment : Fragment() {
         binding = FragmentAdminMenuBinding.inflate(inflater, container, false)
         val view = binding.root
 
-
-        // Initialize the ListView from the layout
         menuListView = binding.menuListView
 
         // Initialize your authController, firestoreController, or any other necessary components.
 
-        val currentUser = authController.getCurrentUserId()
+        val currentUser = authModel.getCurrentUserId()
         if (currentUser != null) {
-            firestoreController.getMenu(
+            firestoreModel.getMenu(
                 onSuccess = { menu ->
                     // Create a DrinkAdapter to display the menu in the ListView
                     drinkAdapter = DrinkAdapter(requireContext(), menu)
@@ -116,7 +115,7 @@ class AdminMenuFragment : Fragment() {
     private fun deleteDrink(selectedDrink: Drink?) {
         if (selectedDrink != null) {
 
-            firestoreController.deleteDrink(
+            firestoreModel.deleteDrink(
                 selectedDrink,
                 onSuccess = {
                     //Toast.makeText(this, "Drink deleted successfully", Toast.LENGTH_SHORT).show()
@@ -130,9 +129,9 @@ class AdminMenuFragment : Fragment() {
     }
 
     private fun refreshContents() {
-        val currentUser = authController.getCurrentUserId()
+        val currentUser = authModel.getCurrentUserId()
         if (currentUser != null) {
-            firestoreController.getMenu(
+            firestoreModel.getMenu(
                 onSuccess = { menu ->
                     // Update the data in the DrinkAdapter and notify the ListView of the changes
                     drinkAdapter.updateData(menu)

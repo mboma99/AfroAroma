@@ -1,4 +1,4 @@
-package com.example.afroaroma.view
+package com.example.afroaroma.controller
 
 import android.net.Uri
 import android.os.Bundle
@@ -15,12 +15,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.Navigation
 import com.example.afroaroma.R
-import com.example.afroaroma.controller.FirestoreController
+import com.example.afroaroma.model.FirestoreModel
 import com.example.afroaroma.model.Drink
 
-class addDrinkFragment : Fragment() {
+class AddDrinkFragment : Fragment() {
 
-    private lateinit var firestoreController: FirestoreController
+    private lateinit var firestoreModel: FirestoreModel
     private lateinit var nameEditText: EditText
     private lateinit var descriptionEditText: EditText
     private lateinit var priceEditText: EditText
@@ -50,7 +50,7 @@ class addDrinkFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        firestoreController = FirestoreController()
+        firestoreModel = FirestoreModel()
 
         errorTextView = view.findViewById(R.id.errorTextView)
         btnBack = view.findViewById(R.id.btnBack)
@@ -123,7 +123,7 @@ class addDrinkFragment : Fragment() {
         if (selectedImageUri != null) {
             progressBar.visibility = View.VISIBLE
             if (drink != null) {
-                firestoreController.addDrinkWithPhoto(
+                firestoreModel.addDrinkWithPhoto(
                     drink,
                     selectedImageUri!!,
                     onSuccess = {
@@ -143,7 +143,7 @@ class addDrinkFragment : Fragment() {
     }
     private fun createDrinkWithOutImage (drink: Drink){
         if (drink != null) {
-            firestoreController.addDrink(
+            firestoreModel.addDrink(
                 drink,
                 onSuccess = {
                     //Toast.makeText(this, "Drink added successfully", Toast.LENGTH_SHORT).show()

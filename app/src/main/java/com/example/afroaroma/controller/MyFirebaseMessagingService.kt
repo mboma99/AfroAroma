@@ -4,17 +4,11 @@ import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
-import androidx.test.core.app.ApplicationProvider
 import com.example.afroaroma.R
-import com.example.afroaroma.view.SplashActivity
-import com.google.api.Context
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
