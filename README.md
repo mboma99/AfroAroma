@@ -12,6 +12,7 @@ Welcome to the AfroAroma! This app is designed to manage a café's menu, orders,
   - View and manage orders.
   - Change order status (preparing, ready, completed).
   - View detailed order information.
+  - View user feedback & mark as read
 
 - **User Panel:**
   - Access user-specific features.
