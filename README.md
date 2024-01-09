@@ -16,9 +16,10 @@ Welcome to the AfroAroma! This app is designed to manage a café's menu, orders,
 
 - **User Panel:**
   - Access user-specific features.
-  - Place orders to cart and view order history.
+  - Place orders and view order history.
+  - Able to add orders to cart.
   - Able to leave a review and rating.
-  - Able to product details
+  - Able to view product details.
 
 ## Architecture
 
