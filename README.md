@@ -2,6 +2,9 @@
 
 Welcome to the AfroAroma! This app is designed to manage a café's menu, orders, and more. The application is built using Kotlin, Firebase Authentication, Firestore for data storage, and Firebase Storage for handling images.
 
+#Demo
+https://youtu.be/cSOARO0z1HM
+
 ## Features
 
 - **User Authentication:** Firebase Authentication is used to securely authenticate users, differentiating between admins and regular users.
